@@ -1,3 +1,42 @@
-.json
-.csv
-.txt
+# Python bytecode and tool caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local Python environments
+.venv/
+venv/
+env/
+.env
+.env.*
+
+# Bulk source and derived datasets
+data/raw_data/
+data/processed/
+
+# Generated regression and analysis outputs
+linear_regression_test/results/
+
+# Generated graph visualizations and vendored browser assets
+data/graph_data/*.csv
+data/graph_data/echarts.min.js
+data/graph_data/dynamic_granger_significance_board.html
+data/graph_data/economic_graph.html
+data/graph_data/futures_granger_causality_graph.html
+
+# Logs and temporary files
+*.log
+*.tmp
+*.temp
+*.bak
+~$*
+
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini
