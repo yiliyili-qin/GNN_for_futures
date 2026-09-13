@@ -1,21 +1,25 @@
-"""Data preparation for regression-weighted economic graph snapshots."""
+"""Build economic-prior and daily regression graph data without propagation."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
+import json
 from pathlib import Path
+import re
 from typing import Sequence
 
 import numpy as np
 import pandas as pd
 
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_RESULTS_DIR = (
-    Path(__file__).resolve().parents[1]
-    / "linear_regression_test"
-    / "results"
-    / "graph_edge_regressions_full"
+    PROJECT_ROOT / "linear_regression_test" / "results" / "all_node_edge_regressions"
 )
+DEFAULT_GRAPH_PATH = (
+    PROJECT_ROOT / "data" / "graph_data" / "futures_graph_smm_simplified.html"
+)
+EDGE_BLOCK = re.compile(r"const rawEdges = `(?P<edges>.*?)`\.trim\(\);", re.DOTALL)
 
 SUMMARY_KEY = [
     "scope",
@@ -43,14 +47,32 @@ COEFFICIENT_COLUMNS = {
 
 
 @dataclass(frozen=True)
-class RegressionGraphSnapshot:
-    """Framework-neutral inputs for one dated directed graph."""
+class GraphData:
+    """One graph's aligned dense matrix and nonzero sparse representation."""
+
+    node_names: tuple[str, ...]
+    adjacency: np.ndarray
+    edge_index: np.ndarray
+    edge_weight: np.ndarray
+
+
+@dataclass(frozen=True)
+class DailyRegressionGraphData(GraphData):
+    """A dated regression graph plus its complete auditable direction table."""
+
+    forecast_date: pd.Timestamp
+    train_end_date: pd.Timestamp
+    edge_frame: pd.DataFrame
+
+
+@dataclass(frozen=True)
+class DailyDualGraphSnapshot:
+    """Independent prior and regression structures sharing one node order."""
 
     forecast_date: pd.Timestamp
     node_names: tuple[str, ...]
-    edge_index: np.ndarray
-    edge_attr: np.ndarray
-    edge_frame: pd.DataFrame
+    economic_prior: GraphData
+    regression: DailyRegressionGraphData
 
 
 def _require_columns(frame: pd.DataFrame, required: set[str], name: str) -> None:
@@ -59,10 +81,20 @@ def _require_columns(frame: pd.DataFrame, required: set[str], name: str) -> None
         raise ValueError(f"{name} is missing required columns: {missing}")
 
 
+def load_node_order(results_dir: str | Path = DEFAULT_RESULTS_DIR) -> tuple[str, ...]:
+    """Load the authoritative all-node order persisted with the experiment."""
+    metadata_path = Path(results_dir) / "experiment_metadata.json"
+    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
+    names = tuple(str(name) for name in metadata.get("symbols", ()))
+    if len(names) != 44 or len(set(names)) != len(names):
+        raise ValueError("Experiment metadata must contain 44 unique symbols")
+    return names
+
+
 def load_regression_outputs(
     results_dir: str | Path = DEFAULT_RESULTS_DIR,
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Load persisted dynamic regression summaries and coefficients."""
+    """Load persisted all-node dynamic regression summaries and coefficients."""
     directory = Path(results_dir)
     summary = pd.read_csv(directory / "dynamic_model_summary.csv")
     coefficients = pd.read_csv(directory / "dynamic_coefficients.csv")
@@ -91,7 +123,9 @@ def clean_regression_outputs(
         raise ValueError(f"No summary rows for scope={scope!r}, model_variant={model_variant!r}")
 
     for frame in (clean_summary, clean_coefficients):
-        frame["forecast_date"] = pd.to_datetime(frame["forecast_date"], errors="raise").dt.normalize()
+        frame["forecast_date"] = pd.to_datetime(
+            frame["forecast_date"], errors="raise"
+        ).dt.normalize()
         frame["graph_edge_number"] = pd.to_numeric(
             frame["graph_edge_number"], errors="raise"
         ).astype("int64")
@@ -118,7 +152,6 @@ def clean_regression_outputs(
     )
     if noncausal.any():
         raise ValueError("Found regression windows whose training end is not before forecast date")
-
     return clean_summary, clean_coefficients
 
 
@@ -128,13 +161,13 @@ def build_regression_edge_features(
     *,
     robust_quantile: float = 0.75,
     epsilon: float = 1e-8,
-    z_max: float = 2.0,
+    clip_max: float = 2.0,
 ) -> pd.DataFrame:
-    """Build the economic-prior and signed regression channels for every date."""
+    """Build nonnegative daily weights from absolute cross-lag coefficient sums."""
     if not 0.0 < robust_quantile <= 1.0:
         raise ValueError("robust_quantile must be in (0, 1]")
-    if epsilon <= 0.0 or z_max <= 0.0:
-        raise ValueError("epsilon and z_max must be positive")
+    if epsilon <= 0.0 or clip_max <= 0.0:
+        raise ValueError("epsilon and clip_max must be positive")
 
     clean_summary, clean_coefficients = clean_regression_outputs(summary, coefficients)
     cross_lags = clean_coefficients.loc[
@@ -142,41 +175,53 @@ def build_regression_edge_features(
         & clean_coefficients["term_node"].eq("explanatory")
         & clean_coefficients["lag"].gt(0)
         & np.isfinite(clean_coefficients["coefficient"])
-    ]
+    ].copy()
+    cross_lags["absolute_coefficient"] = cross_lags["coefficient"].abs()
     coefficient_sums = (
-        cross_lags.groupby(SUMMARY_KEY, as_index=False, dropna=False)["coefficient"]
+        cross_lags.groupby(SUMMARY_KEY, as_index=False, dropna=False)[
+            "absolute_coefficient"
+        ]
         .sum()
-        .rename(columns={"coefficient": "coefficient_sum"})
+        .rename(columns={"absolute_coefficient": "absolute_coefficient_sum"})
     )
-
     edge_features = clean_summary.merge(
-        coefficient_sums,
-        on=SUMMARY_KEY,
-        how="left",
-        validate="one_to_one",
+        coefficient_sums, on=SUMMARY_KEY, how="left", validate="one_to_one"
     )
-    edge_features["coefficient_sum"] = edge_features["coefficient_sum"].fillna(0.0)
-    edge_features["robust_scale"] = edge_features.groupby("forecast_date")[
-        "coefficient_sum"
-    ].transform(lambda values: values.abs().quantile(robust_quantile))
-    edge_features["scaled_coefficient"] = np.clip(
-        edge_features["coefficient_sum"] / (edge_features["robust_scale"] + epsilon),
-        -z_max,
-        z_max,
-    )
+    edge_features["absolute_coefficient_sum"] = edge_features[
+        "absolute_coefficient_sum"
+    ].fillna(0.0)
 
-    fitted = edge_features["model_status"].eq("fitted")
-    positive_lag = edge_features["bic_selected_lag"].gt(0)
     valid_p_value = edge_features["edge_wald_p_value"].between(0.0, 1.0)
-    edge_features["wald_confidence"] = np.where(
-        valid_p_value,
-        1.0 - edge_features["edge_wald_p_value"],
+    edge_features["eligible"] = (
+        edge_features["model_status"].eq("fitted")
+        & edge_features["bic_selected_lag"].gt(0)
+        & valid_p_value
+        & edge_features["absolute_coefficient_sum"].gt(0.0)
+    )
+    eligible_strength = edge_features["absolute_coefficient_sum"].where(
+        edge_features["eligible"]
+    )
+    edge_features["robust_scale"] = eligible_strength.groupby(
+        edge_features["forecast_date"]
+    ).transform(lambda values: values.dropna().quantile(robust_quantile))
+    edge_features["robust_scale"] = edge_features["robust_scale"].fillna(0.0)
+    edge_features["normalized_strength"] = np.where(
+        edge_features["eligible"],
+        np.clip(
+            edge_features["absolute_coefficient_sum"]
+            / (edge_features["robust_scale"] + epsilon),
+            0.0,
+            clip_max,
+        )
+        / clip_max,
         0.0,
     )
-    edge_features["prior_weight"] = 1.0
+    edge_features["wald_confidence"] = np.where(
+        valid_p_value, 1.0 - edge_features["edge_wald_p_value"], 0.0
+    )
     edge_features["regression_weight"] = np.where(
-        fitted & positive_lag,
-        edge_features["scaled_coefficient"] * edge_features["wald_confidence"],
+        edge_features["eligible"],
+        edge_features["normalized_strength"] * edge_features["wald_confidence"],
         0.0,
     )
     return edge_features.sort_values(
@@ -184,39 +229,108 @@ def build_regression_edge_features(
     ).reset_index(drop=True)
 
 
-def build_graph_snapshot(
+def build_economic_prior_graph(
+    node_order: Sequence[str], graph_path: str | Path = DEFAULT_GRAPH_PATH
+) -> GraphData:
+    """Build the fixed symmetric binary graph from the 57 economic relations."""
+    names = _validate_node_order(node_order)
+    match = EDGE_BLOCK.search(Path(graph_path).read_text(encoding="utf-8"))
+    if not match:
+        raise ValueError("Could not find rawEdges in economic graph HTML")
+    pairs: set[tuple[str, str]] = set()
+    for line in match.group("edges").strip().splitlines():
+        source, target, *_ = line.split("|")
+        if source == target:
+            raise ValueError(f"Economic graph contains self-loop {source}")
+        pairs.add(tuple(sorted((source, target))))
+    if len(pairs) != 57:
+        raise ValueError(f"Expected 57 unique economic pairs, found {len(pairs)}")
+
+    node_index = {name: position for position, name in enumerate(names)}
+    unknown = sorted({name for pair in pairs for name in pair}.difference(node_index))
+    if unknown:
+        raise ValueError(f"Economic graph contains unknown nodes: {unknown}")
+    adjacency = np.zeros((len(names), len(names)), dtype=np.int8)
+    for source, target in pairs:
+        source_index, target_index = node_index[source], node_index[target]
+        adjacency[source_index, target_index] = 1
+        adjacency[target_index, source_index] = 1
+    return _graph_data_from_adjacency(names, adjacency)
+
+
+def build_daily_regression_graph(
+    edge_features: pd.DataFrame,
+    forecast_date: str | pd.Timestamp,
+    node_order: Sequence[str],
+) -> DailyRegressionGraphData:
+    """Build one complete daily matrix and its strictly positive sparse edges."""
+    names = _validate_node_order(node_order)
+    date = pd.Timestamp(forecast_date).normalize()
+    dated = edge_features.loc[edge_features["forecast_date"].eq(date)].copy()
+    if dated.empty:
+        raise ValueError(f"No edge features found for forecast date {date.date()}")
+    if dated["directed_edge"].duplicated().any():
+        raise ValueError(f"Duplicate directed edges found for forecast date {date.date()}")
+    expected_directions = len(names) * (len(names) - 1)
+    if len(dated) != expected_directions:
+        raise ValueError(
+            f"Expected {expected_directions} directed rows for {date.date()}, found {len(dated)}"
+        )
+
+    node_index = {name: position for position, name in enumerate(names)}
+    observed = set(dated["explanatory_futures"]).union(dated["dependent_futures"])
+    unknown = sorted(observed.difference(node_index))
+    if unknown:
+        raise ValueError(f"Regression graph contains unknown nodes: {unknown}")
+    adjacency = np.zeros((len(names), len(names)), dtype=np.float32)
+    source_index = dated["explanatory_futures"].map(node_index).to_numpy(dtype=np.int64)
+    target_index = dated["dependent_futures"].map(node_index).to_numpy(dtype=np.int64)
+    weights = dated["regression_weight"].to_numpy(dtype=np.float32)
+    if not np.isfinite(weights).all() or (weights < 0.0).any() or (weights > 1.0).any():
+        raise ValueError("Regression weights must be finite and in [0, 1]")
+    adjacency[source_index, target_index] = weights
+    graph = _graph_data_from_adjacency(names, adjacency)
+
+    train_dates = dated["train_end_date"].dropna().unique()
+    if len(train_dates) != 1:
+        raise ValueError(f"Expected one training end date for {date.date()}")
+    return DailyRegressionGraphData(
+        graph.node_names,
+        graph.adjacency,
+        graph.edge_index,
+        graph.edge_weight,
+        date,
+        pd.Timestamp(train_dates[0]),
+        dated,
+    )
+
+
+def build_daily_dual_graph_snapshot(
     edge_features: pd.DataFrame,
     forecast_date: str | pd.Timestamp,
     *,
     node_order: Sequence[str] | None = None,
-) -> RegressionGraphSnapshot:
-    """Convert one date of edge features to NumPy graph arrays."""
-    date = pd.Timestamp(forecast_date).normalize()
-    dated_edges = edge_features.loc[edge_features["forecast_date"].eq(date)].copy()
-    if dated_edges.empty:
-        raise ValueError(f"No edge features found for forecast date {date.date()}")
-    if dated_edges["directed_edge"].duplicated().any():
-        raise ValueError(f"Duplicate directed edges found for forecast date {date.date()}")
+    results_dir: str | Path = DEFAULT_RESULTS_DIR,
+    graph_path: str | Path = DEFAULT_GRAPH_PATH,
+) -> DailyDualGraphSnapshot:
+    """Build independent prior and regression graph structures for one day."""
+    names = tuple(node_order) if node_order is not None else load_node_order(results_dir)
+    prior = build_economic_prior_graph(names, graph_path)
+    regression = build_daily_regression_graph(edge_features, forecast_date, names)
+    return DailyDualGraphSnapshot(regression.forecast_date, tuple(names), prior, regression)
 
-    observed_nodes = set(dated_edges["explanatory_futures"]).union(
-        dated_edges["dependent_futures"]
-    )
-    names = tuple(node_order) if node_order is not None else tuple(sorted(observed_nodes))
-    if len(names) != len(set(names)):
-        raise ValueError("node_order contains duplicate names")
-    missing_nodes = observed_nodes.difference(names)
-    if missing_nodes:
-        raise ValueError(f"node_order is missing graph nodes: {sorted(missing_nodes)}")
 
-    node_index = {name: position for position, name in enumerate(names)}
-    edge_index = np.asarray(
-        [
-            dated_edges["explanatory_futures"].map(node_index).to_numpy(dtype=np.int64),
-            dated_edges["dependent_futures"].map(node_index).to_numpy(dtype=np.int64),
-        ],
-        dtype=np.int64,
-    )
-    edge_attr = dated_edges[["prior_weight", "regression_weight"]].to_numpy(
-        dtype=np.float32
-    )
-    return RegressionGraphSnapshot(date, names, edge_index, edge_attr, dated_edges)
+def _validate_node_order(node_order: Sequence[str]) -> tuple[str, ...]:
+    names = tuple(str(name) for name in node_order)
+    if not names or len(names) != len(set(names)):
+        raise ValueError("node_order must contain unique node names")
+    return names
+
+
+def _graph_data_from_adjacency(
+    node_names: tuple[str, ...], adjacency: np.ndarray
+) -> GraphData:
+    source_index, target_index = np.nonzero(adjacency)
+    edge_index = np.asarray([source_index, target_index], dtype=np.int64)
+    edge_weight = adjacency[source_index, target_index].astype(np.float32, copy=False)
+    return GraphData(node_names, adjacency, edge_index, edge_weight)

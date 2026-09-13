@@ -11,12 +11,14 @@ flowchart LR
     C[产业链、同级商品、品级与市场联动知识] --> D[经济先验图]
     B --> E[检验先验边是否富集\n且关系是否更持久]
     D --> E
-    E --> F[保留 57 条经济先验边]
+    E --> F[保留 57 条经济先验关系]
+    F --> F2[固定对称先验图 A_prior]
     F --> G[展开为 114 个回归方向]
     G --> H[静态全样本回归]
     G --> I[20+1 日因果滚动回归]
-    I --> J[双通道动态边特征]
-    J --> K[浅层 GNN 图零件]
+    I --> J[日级非负回归边权 W_reg]
+    F2 --> K[双图结构输入\n不含前向传播]
+    J --> K
 ```
 
 ## 1. 为什么先建经济图，再做统计验证
@@ -170,6 +172,20 @@ $$
 
 `explanatory_futures` $\rightarrow$ `dependent_futures`。
 
+全节点动态边使用 [linear_regression_test/run_all_node_edge_regressions.py](linear_regression_test/run_all_node_edge_regressions.py) 生成。它从同一 44 节点权威清单构造
+
+$$
+\binom{44}{2}=946
+$$
+
+个无序期货对，并展开为 1,892 个有向回归方向。该入口直接复用先验边回归的对齐、BIC 选阶、OLS、联合 Wald 检验、20+1 日因果窗口、样本外预测、断点续跑和输出字段，不单独维护另一套统计实现。可先运行小规模检查：
+
+```powershell
+.venv/Scripts/python.exe linear_regression_test/run_all_node_edge_regressions.py --mode dynamic --symbols A,AG,AL --last-forecast-days 1 --output-dir linear_regression_test/results/all_node_edge_regressions_smoke --no-resume
+```
+
+全量两年动态实验移除 `--symbols` 和 `--last-forecast-days` 即可。全节点结果本身也包含原有 114 个先验方向，但新设计不再把这些方向与先验合并到同一条边上：经济先验关系由固定对称图 $A^{\mathrm{prior}}$ 表达，全节点回归结果由每个预测日的 $W^{\mathrm{reg}}$ 表达，两者是彼此独立的结构输入。
+
 双向估计不表示产业链在经济意义上必然双向，而是让模型分别观察上游到下游和下游到上游的价格发现、预期反馈及共同信息反应。`relation_type` 和原始 `graph_source/graph_target` 仍被保留，以便后续区分经济方向。
 
 ### 5.1 静态回归
@@ -200,46 +216,54 @@ $$
 
 个基线方向-日期窗口，无重复主键。训练期严格早于预测日的检查已通过。
 
-动态结果中，95.96% 的窗口选择 0 阶，只有 2,228 个窗口包含可检验的跨期货滞后项；原始 $p<0.1$ 的窗口为 811 个，占全部窗口 1.47%，占可检验窗口 36.40%。这说明短期传导是稀疏且时变的，也正是采用“稳定先验通道 + 动态回归通道”而不是按日删边的原因。
+动态结果中，95.96% 的窗口选择 0 阶，只有 2,228 个窗口包含可检验的跨期货滞后项；原始 $p<0.1$ 的窗口为 811 个，占全部窗口 1.47%，占可检验窗口 36.40%。这说明短期传导是稀疏且时变的，也正是采用“固定先验图 + 动态回归图”而不是按日删边的原因。
 
-## 6. 动态边权如何构建
+## 6. 回归图边权如何构建
 
-对方向 $i\rightarrow j$ 和预测日期 $t$，令 $L_{ij,t}$ 为该 20 日训练窗口由 BIC 选择的滞后阶数，$\beta_{ij,\ell,t}$ 为来源期货 $i$ 的第 $\ell$ 阶滞后在目标期货 $j$ 方程中的系数。
+对方向 $i\rightarrow j$ 和预测日期 $t$，令 $L_{ij,t}$ 为该 20 日训练窗口由 BIC 选择的滞后阶数，$\beta_{ij,\ell,t}$ 为来源期货 $i$ 的第 $\ell$ 阶滞后在目标期货 $j$ 方程中的系数。第一版回归图只表达“是否应当建立有向连接”，不解释净正负作用，因此原始强度定义为非负量。
 
 ### 6.1 聚合多阶滞后系数
 
-先将同一方向的跨期货系数相加：
+将同一方向跨期货系数的绝对值相加：
 
 $$
-b_{ij,t}=\sum_{\ell=1}^{L_{ij,t}}\beta_{ij,\ell,t}.
+b_{ij,t}=\sum_{\ell=1}^{L_{ij,t}}\left|\beta_{ij,\ell,t}\right|.
 $$
 
-$b_{ij,t}>0$ 表示净同向作用，$b_{ij,t}<0$ 表示净反向作用。求和保留累计净方向，但正负滞后可能互相抵消；当前先采用这一简单、预先固定的规则，不事后挑选表现最好的单个滞后。
+绝对值加和避免正负滞后相互抵消：例如 $\beta_1=0.8$、$\beta_2=-0.8$ 时净和为 0，但绝对值和为 1.6，仍应保留连接。代价是权重不再区分促进与抑制，且阶数更多的方向天然可能得到更大的绝对值和；方向性仍由 $i\to j$ 与 $j\to i$ 的独立方程保留。
 
 ### 6.2 按日期进行稳健缩放
 
-不同日期和方向的原始系数尺度可能差异很大。对日期 $t$ 的全部 114 个方向计算绝对系数和的第 75 百分位数：
+不同日期和方向的原始系数尺度可能差异很大。**只在当天有效非零方向上**计算绝对系数和的第 75 百分位数。记
 
 $$
-s_t=Q_{0.75}\left(\{|b_{uv,t}|\}\right).
+\mathcal E_t^{+}=\{(u,v):\text{状态为 fitted},\ L_{uv,t}>0,\ p^{\mathrm{Wald}}_{uv,t}\in[0,1],\ b_{uv,t}>0\},
 $$
 
-然后定义
+则
 
 $$
-z_{ij,t}=\operatorname{clip}\left(
+s_t=Q_{0.75}\bigl(\{b_{uv,t}:(u,v)\in\mathcal E_t^{+}\}\bigr).
+$$
+
+然后先截断、再除以截断上界，使强度统一落入 $[0,1]$：
+
+$$
+r_{ij,t}=\frac{1}{2}\operatorname{clip}\left(
 \frac{b_{ij,t}}{s_t+\epsilon},
--z_{\max},z_{\max}
+0,z_{\max}
 \right).
 $$
 
 当前默认 $\epsilon=10^{-8}$、$z_{\max}=2$。其中：
 
 - 第 75 百分位数比均值和标准差更不容易被少数极端回归系数拉动；
-- 不减横截面中位数，因为 $b=0$ 有明确的“无净线性作用”含义；
-- `clip` 限制单条异常边对消息传递的支配程度；
-- 正负号始终保留；
-- $s_t$ 只由日期 $t$ 对应的历史训练窗口估计结果构成，不使用未来日期的系数分布。
+- **只在非零有效方向上取分位数**：每天 1,892 个方向中绝大多数为零阶，若在全部方向上取分位数，实测 484 天中有 484 天 $s_t=0$，缩放会完全失效；
+- 截断限制单条异常边的支配程度，除以 $z_{\max}$ 后与经济先验的 $[0,1]$ 尺度对齐；
+- 不减横截面中位数，因为 $b=0$ 有明确的“无有效连接”含义；
+- $s_t$ 只由日期 $t$ 对应的历史训练窗口估计结果构成，不使用未来日期的系数分布；若 $\mathcal E_t^{+}$ 为空，则 $s_t=0$ 且当天整张回归图为空。
+
+$q=0.75$ 的依据已由全节点结果验证：462 天存在有效非零边，共 5,476 条，截断前饱和比例为 4.49%，最终权重中位数约 0.262。相比之下 $q=0.50$ 的饱和比例为 20.49%，而 $q=0.90/0.95$ 会把最终中位权重压到约 0.200/0.179。明细见 `linear_regression_test/results/all_node_edge_regressions/weight_quantile_comparison/`。
 
 ### 6.3 使用联合 Wald p 值收缩
 
@@ -249,30 +273,20 @@ $$
 c_{ij,t}=\max\left(0,1-p^{\mathrm{Wald}}_{ij,t}\right).
 $$
 
-$c$ 只是工程上的连续收缩因子，不是“关系存在的概率”。它不按固定显著性阈值删边，而是让较弱证据产生较小的回归通道。
+$c$ 只是工程上的连续收缩因子，不是“关系存在的概率”。它不按固定显著性阈值删边，而是让较弱证据产生较小的回归边权。
 
-### 6.4 双通道边特征
+### 6.4 单通道非负回归边权
 
-最终每条边保存两个通道：
-
-$$
-\mathbf e_{ij,t}=
-\begin{bmatrix}
-w^{\mathrm{prior}}_{ij}\\
-w^{\mathrm{reg}}_{ij,t}
-\end{bmatrix},
-$$
-
-其中
+回归图只保存一个非负权重通道，不再与经济先验共用同一条边的两个特征：
 
 $$
-w^{\mathrm{prior}}_{ij}=1,
-$$
-
-$$
-w^{\mathrm{reg}}_{ij,t}
-=\mathbf 1[L_{ij,t}>0]\,
-z_{ij,t}\,c_{ij,t}.
+w^{\mathrm{reg}}_{ij,t}=
+\begin{cases}
+r_{ij,t}\,c_{ij,t},&(i,j)\in\mathcal E_t^{+},\\
+0,&\text{否则},
+\end{cases}
+\qquad
+w^{\mathrm{reg}}_{ij,t}\in[0,1].
 $$
 
 实际实现还要求模型状态为 `fitted` 且 Wald p 值有限。以下情况令 $w^{\mathrm{reg}}=0$：
@@ -282,62 +296,50 @@ $$
 - 模型未成功拟合；
 - 联合 Wald p 值无效。
 
-此时 $w^{\mathrm{prior}}$ 仍为 1，表示短窗没有检出统计增量，但经济关系仍保留。图不会因某一天的统计波动改变拓扑。
+这些方向仍保留在当日审计表中，并在完整矩阵里占一个值为 0 的位置。**矩阵中的 0 不再等于回归图中的一条边**：稀疏 `edge_index` 只保存 $w^{\mathrm{reg}}>0$ 的位置。经济先验关系由固定的 $A^{\mathrm{prior}}$ 单独表达，不会因为某天回归权重为 0 而消失。
 
-## 7. 数据清洗与图快照
+## 7. 数据清洗与双图快照
 
 [graph_model/reg_graph_utils.py](graph_model/reg_graph_utils.py) 实现以下流程：
 
-1. 读取 `dynamic_model_summary.csv` 和 `dynamic_coefficients.csv`；
-2. 只保留 `scope=dynamic`、`model_variant=baseline`；
-3. 校验字段、日期、数值类型和方向-日期唯一键；
-4. 强制验证 `train_end_date < forecast_date`；
-5. 只聚合 `term_type=cross_futures`、`term_node=explanatory`、`lag>0` 的系数；
-6. 按预测日期计算稳健尺度和双通道边特征；
-7. 将某一预测日转换为 `RegressionGraphSnapshot`。
+1. 从 `experiment_metadata.json` 读取权威 44 节点顺序；
+2. 读取全节点结果 `dynamic_model_summary.csv` 和 `dynamic_coefficients.csv`；
+3. 只保留 `scope=dynamic`、`model_variant=baseline`；
+4. 校验字段、日期、数值类型和方向-日期唯一键；
+5. 强制验证 `train_end_date < forecast_date`；
+6. 只聚合 `term_type=cross_futures`、`term_node=explanatory`、`lag>0` 的系数绝对值；
+7. 按预测日期在有效非零方向上计算稳健尺度并生成 $[0,1]$ 回归权重；
+8. 从经济图 HTML 解析 57 条互异品种对，生成固定对称二值先验图；
+9. 将某一预测日转换为共享同一节点顺序的双图快照。
 
-图快照包含：
+每个预测日的双图快照包含：
 
-- `node_names`：稳定节点顺序；
-- `edge_index`：形状为 $[2,E]$ 的有向边索引，第 0 行是来源节点，第 1 行是目标节点；
-- `edge_attr`：形状为 $[E,2]$，两列依次是 `prior_weight` 和 `regression_weight`；
-- `edge_frame`：保留可审计的原始方向、日期、系数和统计字段。
+- `node_names`：两张图共享的稳定 44 节点顺序；
+- `economic_prior`：$A^{\mathrm{prior}}$ 及其稀疏 `edge_index` / `edge_weight`（权重均为 1）；
+- `regression`：完整的 $44\times44$ 审计矩阵、只含 $w^{\mathrm{reg}}>0$ 的稀疏 `edge_index` / `edge_weight`、训练窗截止日期和逐方向审计表 `edge_frame`；
+- 两张图各自独立，不复用 `edge_index`，也不把先验位塞进回归边属性。
 
-真实结果上的首日快照已验证为 43 个当日图内期货节点、114 条有向边，所有边特征均为有限值。权威图设计阶段包含 44 个期货节点，但当前 57 条边并不覆盖其中一个孤立期货，因此快照只包含实际参与消息传递的 43 个节点；上层模型可通过显式 `node_order` 保留额外孤立节点。
+真实结果上的首日快照已验证：44 个节点、1,892 条方向审计行、先验图 114 个非零位置、回归权重全部落在 $[0,1]$，且稀疏索引只包含正权位置。即使某个期货不出现在经济先验关系中，也保留为孤立节点，不会退化成 43 节点。
 
-## 8. 当前 GNN 图零件
+## 8. 图数据结构不包含前向传播
 
-[graph_model/reg_graph.py](graph_model/reg_graph.py) 使用原生 PyTorch，不依赖 PyG 或 DGL。输入为节点特征 $X$、边索引和二维边特征。
+两张图目前**只提供结构**：共享节点顺序、稠密矩阵和稀疏边索引。此前基于双通道边特征的浅层消息模块 `graph_model/reg_graph.py` 已删除，原因有两点：它并不归属任何单一图；而且只要一条边进入 `edge_index`，即使边权为 0，也会经由带 bias 的线性层产生非零消息，容易把“矩阵中的 0”误当成“不存在的边”。
 
-节点编码为
+当前的语义边界是：
 
-$$
-h_i=\operatorname{GELU}(W_x x_i+b_x),
-$$
-
-边编码为
-
-$$
-h^e_{ij,t}=\operatorname{GELU}(W_e\mathbf e_{ij,t}+b_e),
-$$
-
-逐边消息为
-
-$$
-m_{ij,t}=W_m
-\left[h_i\,\Vert\,h_j\,\Vert\,h^e_{ij,t}\right]+b_m,
-$$
-
-其中 $\Vert$ 表示向量拼接。`RegressionGraph.forward()` 返回编码后的节点、每条有向边的消息及来源/目标索引。
+- 矩阵中的 0 只用于对齐和审计；
+- 稀疏 `edge_index` 只保存非零位置，因此 0 不会作为有效边传给后续模型；
+- 两张图都不实现 `forward()`，不编码节点，不构造消息，也不执行聚合。
 
 当前刻意不包含：
 
+- 节点编码与消息构造；
 - 邻居消息聚合；
 - 多层图传播或残差连接；
 - 节点级、边级或图级预测头；
 - 损失函数、优化器和训练循环。
 
-因此，该模块只负责把经济先验和动态回归证据编码为逐边消息，后续完整模型可以自行选择聚合函数和下游任务。
+双图如何联合传播、聚合和融合，将在下一轮完整预测模型中统一定义，并作为新的独立实验记录。
 
 ## 9. 结果边界
 
@@ -362,13 +364,11 @@ $$
 | [linear_regression_test/run_pairwise_granger.py](linear_regression_test/run_pairwise_granger.py) | 44 节点全配对静态 Granger 检验 |
 | [linear_regression_test/run_dynamic_pairwise_granger.py](linear_regression_test/run_dynamic_pairwise_granger.py) | 全节点滚动 Granger 检验 |
 | [linear_regression_test/run_graph_edge_regressions.py](linear_regression_test/run_graph_edge_regressions.py) | 57 条先验边的静态和 20+1 日回归 |
+| [linear_regression_test/run_all_node_edge_regressions.py](linear_regression_test/run_all_node_edge_regressions.py) | 44 节点全组合的同口径静态和 20+1 日回归 |
 | [linear_regression_test/gnn_edge_weight_regression_experiment_protocol.md](linear_regression_test/gnn_edge_weight_regression_experiment_protocol.md) | 回归实验的预先批准口径 |
 | [linear_regression_test/results/graph_edge_regressions_full/initial_analysis_report.md](linear_regression_test/results/graph_edge_regressions_full/initial_analysis_report.md) | 完整回归结果分析 |
-| [graph_model/reg_graph_utils.py](graph_model/reg_graph_utils.py) | 回归数据读取、清洗、边权计算和图快照构造 |
-| [graph_model/reg_graph.py](graph_model/reg_graph.py) | 不含聚合与训练的浅层图消息模块 |
+| [graph_model/reg_graph_utils.py](graph_model/reg_graph_utils.py) | 44 节点顺序、回归权重计算、先验图与日级双图快照构造（不含前向传播） |
+| [graph_model/test_reg_graph_utils.py](graph_model/test_reg_graph_utils.py) | 双图数据层与边权公式的契约测试 |
+| [graph_model/two_graph_daily_design_review.md](graph_model/two_graph_daily_design_review.md) | 双图公式、接口与验收的核对基准 |
 
 当前阶段实现和结果均应视为下一轮模型实验的固定基线。任何窗口长度、显著性收缩、稳健尺度、聚合方式或节点范围的变化，都应作为新的独立实验记录，而不应回写修改本轮结果。
-
-
-
-
