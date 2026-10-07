@@ -21,11 +21,12 @@ class CrossFuturesTemporalAttentionOutput:
 class CrossFuturesTemporalAttention(nn.Module):
     """Encode each future independently, then score every other future's history.
 
-    Input shape is ``[num_futures, sequence_length, input_size]``. A shared
-    single-layer, unidirectional LSTM produces ``[N, t, F]`` hidden states.
-    For each target future i, its final state is projected to a query and
-    dotted with the final L states of every source future j != i. The raw
-    scores have shape ``[N, N - 1, L]`` and are not scaled or normalized.
+    Input shape is either ``[num_futures, sequence_length, input_size]`` or
+    ``[batch, num_futures, sequence_length, input_size]``. A shared single-layer,
+    unidirectional LSTM encodes every future independently. For each target
+    future i, its final state is projected to a query and dotted with the final
+    L states of every source future j != i. The raw scores have shape
+    ``[N, N - 1, L]`` or ``[B, N, N - 1, L]`` and are not scaled or normalized.
     """
 
     def __init__(
@@ -33,7 +34,7 @@ class CrossFuturesTemporalAttention(nn.Module):
         input_size: int,
         *,
         hidden_size: int = 13,
-        history_length: int = 16,
+        history_length: int = 40,
         expected_num_futures: int | None = 44,
         lstm_bias: bool = True,
         query_bias: bool = False,
@@ -69,14 +70,31 @@ class CrossFuturesTemporalAttention(nn.Module):
     def forward(self, inputs: Tensor) -> CrossFuturesTemporalAttentionOutput:
         """Return LSTM states, final queries, raw pair scores, and peer indices."""
         self._validate_inputs(inputs)
-        hidden_states, _ = self.lstm(inputs)
-        queries = self.query_projection(hidden_states[:, -1, :])
-        keys = hidden_states[:, -self.history_length :, :]
+        unbatched = inputs.ndim == 3
+        if unbatched:
+            batch_inputs = inputs.unsqueeze(0)
+        else:
+            batch_inputs = inputs
+        batch_size, num_futures, sequence_length, _ = batch_inputs.shape
+        flat_inputs = batch_inputs.reshape(
+            batch_size * num_futures,
+            sequence_length,
+            self.input_size,
+        )
+        flat_hidden_states, _ = self.lstm(flat_inputs)
+        hidden_states = flat_hidden_states.reshape(
+            batch_size,
+            num_futures,
+            sequence_length,
+            self.hidden_size,
+        )
+        queries = self.query_projection(hidden_states[:, :, -1, :])
+        keys = hidden_states[:, :, -self.history_length :, :]
 
-        all_scores = torch.einsum("if,jlf->ijl", queries, keys)
-        num_futures = inputs.shape[0]
+        all_scores = torch.einsum("bif,bjlf->bijl", queries, keys)
         peer_mask = ~torch.eye(num_futures, dtype=torch.bool, device=inputs.device)
-        attention_scores = all_scores[peer_mask].reshape(
+        attention_scores = all_scores[:, peer_mask].reshape(
+            batch_size,
             num_futures,
             num_futures - 1,
             self.history_length,
@@ -86,6 +104,10 @@ class CrossFuturesTemporalAttention(nn.Module):
             num_futures,
             num_futures - 1,
         )
+        if unbatched:
+            hidden_states = hidden_states.squeeze(0)
+            queries = queries.squeeze(0)
+            attention_scores = attention_scores.squeeze(0)
         return CrossFuturesTemporalAttentionOutput(
             hidden_states=hidden_states,
             queries=queries,
@@ -94,9 +116,17 @@ class CrossFuturesTemporalAttention(nn.Module):
         )
 
     def _validate_inputs(self, inputs: Tensor) -> None:
-        if inputs.ndim != 3:
-            raise ValueError("inputs must have shape [num_futures, sequence_length, input_size]")
-        num_futures, sequence_length, input_size = inputs.shape
+        if inputs.ndim == 3:
+            num_futures, sequence_length, input_size = inputs.shape
+        elif inputs.ndim == 4:
+            batch_size, num_futures, sequence_length, input_size = inputs.shape
+            if batch_size < 1:
+                raise ValueError("inputs must contain at least one batch item")
+        else:
+            raise ValueError(
+                "inputs must have shape [num_futures, sequence_length, input_size] "
+                "or [batch, num_futures, sequence_length, input_size]"
+            )
         if self.expected_num_futures is not None and num_futures != self.expected_num_futures:
             raise ValueError(
                 f"Expected {self.expected_num_futures} futures, got {num_futures}"
@@ -111,3 +141,5 @@ class CrossFuturesTemporalAttention(nn.Module):
             raise ValueError(f"Expected input_size={self.input_size}, got {input_size}")
         if not inputs.is_floating_point():
             raise TypeError("inputs must use a floating-point dtype")
+        if not torch.isfinite(inputs).all():
+            raise FloatingPointError("inputs must be finite")

@@ -1,0 +1,37 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gnn-for-futures"
+version = "0.1.0"
+description = "Directed GraphMixer models for cross-futures shock-follow prediction"
+requires-python = ">=3.11"
+dependencies = [
+  "numpy>=2.0",
+  "pandas>=2.2",
+  "torch>=2.6",
+]
+
+[project.optional-dependencies]
+dev = [
+  "build>=1.2",
+  "pytest>=8.0",
+]
+
+[project.scripts]
+gnn-materialize-shock-follow = "gnn_for_futures.cli.materialize_shock_follow:main"
+gnn-train-shock-follow-v1 = "gnn_for_futures.shock_follow.training.train_v1:main"
+gnn-train-shock-follow-v2 = "gnn_for_futures.shock_follow.training.train_v2:main"
+gnn-evaluate-shock-follow-v1 = "gnn_for_futures.shock_follow.evaluation.evaluate_v1:main"
+gnn-confirm-shock-follow-v2 = "gnn_for_futures.shock_follow.evaluation.confirmation_v2:main"
+gnn-add-fundamental-factors = "gnn_for_futures.cli.add_fundamental_factors:main"
+gnn-add-technical-indicators = "gnn_for_futures.cli.add_technical_indicators:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+include-package-data = false
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["gnn_for_futures*"]

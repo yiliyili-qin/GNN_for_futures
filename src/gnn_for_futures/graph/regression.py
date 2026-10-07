@@ -2,7 +2,9 @@
 
 from __future__ import annotations
 
+from collections import Counter
 from dataclasses import dataclass
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -12,12 +14,12 @@ import numpy as np
 import pandas as pd
 
 
-PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_RESULTS_DIR = (
-    PROJECT_ROOT / "linear_regression_test" / "results" / "all_node_edge_regressions"
+DEFAULT_RESULTS_DIR = Path(
+    "linear_regression_test/results/all_node_edge_regressions"
 )
-DEFAULT_GRAPH_PATH = (
-    PROJECT_ROOT / "data" / "graph_data" / "futures_graph_smm_simplified.html"
+DEFAULT_GRAPH_PATH = Path("data/graph_data/futures_graph_smm_simplified.html")
+DEFAULT_REGRESSION_AVAILABILITY_PATH = Path(
+    "data/contracts/regression_graph_availability.csv"
 )
 EDGE_BLOCK = re.compile(r"const rawEdges = `(?P<edges>.*?)`\.trim\(\);", re.DOTALL)
 
@@ -63,11 +65,12 @@ class DailyRegressionGraphData(GraphData):
     forecast_date: pd.Timestamp
     train_end_date: pd.Timestamp
     edge_frame: pd.DataFrame
+    available_at: pd.Timestamp | None = None
 
 
 @dataclass(frozen=True)
 class DailyDualGraphSnapshot:
-    """Independent prior and regression structures sharing one node order."""
+    """Legacy date-aligned snapshot; not safe for intraday V1 as-of use."""
 
     forecast_date: pd.Timestamp
     node_names: tuple[str, ...]
@@ -89,6 +92,87 @@ def load_node_order(results_dir: str | Path = DEFAULT_RESULTS_DIR) -> tuple[str,
     if len(names) != 44 or len(set(names)) != len(names):
         raise ValueError("Experiment metadata must contain 44 unique symbols")
     return names
+
+
+def node_order_sha256(node_order: Sequence[str]) -> str:
+    """Hash an authoritative ordered node list without ambiguous separators."""
+    names = _validate_node_order(node_order)
+    payload = json.dumps(names, ensure_ascii=False, separators=(",", ":")).encode(
+        "utf-8"
+    )
+    return hashlib.sha256(payload).hexdigest()
+
+
+def load_regression_availability_manifest(
+    path: str | Path = DEFAULT_REGRESSION_AVAILABILITY_PATH,
+    *,
+    node_order: Sequence[str],
+) -> pd.DataFrame:
+    """Load measured regression snapshot availability and reject inferred dates."""
+    manifest_path = Path(path)
+    if not manifest_path.is_file():
+        raise FileNotFoundError(
+            f"Regression availability manifest is required but was not found: {manifest_path}"
+        )
+    frame = pd.read_csv(manifest_path)
+    required = {
+        "forecast_date",
+        "train_end_date",
+        "available_at",
+        "node_order_sha256",
+        "measurement_source",
+    }
+    missing = sorted(required.difference(frame.columns))
+    if missing:
+        raise ValueError(f"Regression availability manifest is missing fields: {missing}")
+    if frame.empty:
+        raise ValueError("Regression availability manifest must not be empty")
+    frame["forecast_date"] = pd.to_datetime(
+        frame["forecast_date"], errors="raise"
+    ).dt.normalize()
+    frame["train_end_date"] = pd.to_datetime(
+        frame["train_end_date"], errors="raise"
+    ).dt.normalize()
+    frame["available_at"] = pd.to_datetime(frame["available_at"], errors="raise")
+    if frame["available_at"].dt.tz is not None:
+        raise ValueError(
+            "Regression available_at must use the same timezone-naive Asia/Shanghai "
+            "clock as bar datetime values"
+        )
+    if frame[["forecast_date", "train_end_date", "available_at"]].isna().any().any():
+        raise ValueError("Regression availability dates must be non-missing")
+    if frame["forecast_date"].duplicated().any():
+        raise ValueError("Regression availability manifest has duplicate forecast dates")
+    if (frame["train_end_date"] >= frame["forecast_date"]).any():
+        raise ValueError("Regression training end must precede forecast date")
+    if (
+        frame["available_at"].dt.normalize() <= frame["train_end_date"]
+    ).any():
+        raise ValueError(
+            "Regression available_at must not precede the end of its training window"
+        )
+    expected_hash = node_order_sha256(node_order)
+    if not frame["node_order_sha256"].eq(expected_hash).all():
+        raise ValueError("Regression availability manifest node hash mismatch")
+    source = frame["measurement_source"].astype("string")
+    if source.isna().any() or source.str.strip().eq("").any():
+        raise ValueError("Regression availability measurement_source must be non-empty")
+    return frame.sort_values(["available_at", "forecast_date"]).reset_index(drop=True)
+
+
+def select_regression_snapshot_asof(
+    availability: pd.DataFrame,
+    cutoff_at: str | pd.Timestamp,
+) -> pd.Series:
+    """Select the latest dated snapshot truly available by an intraday cutoff."""
+    cutoff = pd.Timestamp(cutoff_at)
+    eligible = availability.loc[
+        availability["available_at"].le(cutoff)
+        & availability["forecast_date"].le(cutoff.normalize())
+    ]
+    if eligible.empty:
+        raise LookupError(f"No regression snapshot is available by {cutoff}")
+    return eligible.sort_values(["forecast_date", "available_at"]).iloc[-1]
 
 
 def load_regression_outputs(
@@ -229,12 +313,16 @@ def build_regression_edge_features(
     ).reset_index(drop=True)
 
 
-def build_economic_prior_graph(
-    node_order: Sequence[str], graph_path: str | Path = DEFAULT_GRAPH_PATH
+def build_economic_prior_graph_from_bytes(
+    node_order: Sequence[str], graph_bytes: bytes
 ) -> GraphData:
-    """Build the fixed symmetric binary graph from the 57 economic relations."""
+    """Build the fixed graph from one immutable HTML byte snapshot."""
     names = _validate_node_order(node_order)
-    match = EDGE_BLOCK.search(Path(graph_path).read_text(encoding="utf-8"))
+    try:
+        graph_text = graph_bytes.decode("utf-8")
+    except UnicodeDecodeError as error:
+        raise ValueError("Economic graph HTML must be valid UTF-8") from error
+    match = EDGE_BLOCK.search(graph_text)
     if not match:
         raise ValueError("Could not find rawEdges in economic graph HTML")
     pairs: set[tuple[str, str]] = set()
@@ -258,6 +346,26 @@ def build_economic_prior_graph(
     return _graph_data_from_adjacency(names, adjacency)
 
 
+def load_economic_prior_graph_snapshot(
+    node_order: Sequence[str], graph_path: str | Path = DEFAULT_GRAPH_PATH
+) -> tuple[GraphData, str]:
+    """Parse and hash one immutable economic-graph file-byte snapshot."""
+    path = Path(graph_path)
+    if path.is_symlink() or not path.is_file():
+        raise FileNotFoundError(f"Economic graph must be a regular nonsymlink file: {path}")
+    graph_bytes = path.read_bytes()
+    graph = build_economic_prior_graph_from_bytes(node_order, graph_bytes)
+    return graph, hashlib.sha256(graph_bytes).hexdigest()
+
+
+def build_economic_prior_graph(
+    node_order: Sequence[str], graph_path: str | Path = DEFAULT_GRAPH_PATH
+) -> GraphData:
+    """Build the fixed graph from one immutable file-byte snapshot."""
+    graph, _ = load_economic_prior_graph_snapshot(node_order, graph_path)
+    return graph
+
+
 def build_daily_regression_graph(
     edge_features: pd.DataFrame,
     forecast_date: str | pd.Timestamp,
@@ -266,9 +374,24 @@ def build_daily_regression_graph(
     """Build one complete daily matrix and its strictly positive sparse edges."""
     names = _validate_node_order(node_order)
     date = pd.Timestamp(forecast_date).normalize()
-    dated = edge_features.loc[edge_features["forecast_date"].eq(date)].copy()
+    if "forecast_date" not in edge_features.columns:
+        raise ValueError("edge_features is missing forecast_date")
+    feature_dates = pd.to_datetime(
+        edge_features["forecast_date"], errors="raise"
+    ).dt.normalize()
+    dated = edge_features.loc[feature_dates.eq(date)].copy()
     if dated.empty:
         raise ValueError(f"No edge features found for forecast date {date.date()}")
+    required_columns = {
+        "directed_edge",
+        "explanatory_futures",
+        "dependent_futures",
+        "regression_weight",
+        "train_end_date",
+    }
+    missing_columns = sorted(required_columns.difference(dated.columns))
+    if missing_columns:
+        raise ValueError(f"edge_features is missing columns: {missing_columns}")
     if dated["directed_edge"].duplicated().any():
         raise ValueError(f"Duplicate directed edges found for forecast date {date.date()}")
     expected_directions = len(names) * (len(names) - 1)
@@ -278,10 +401,49 @@ def build_daily_regression_graph(
         )
 
     node_index = {name: position for position, name in enumerate(names)}
-    observed = set(dated["explanatory_futures"]).union(dated["dependent_futures"])
+    pairs = list(
+        zip(
+            dated["explanatory_futures"],
+            dated["dependent_futures"],
+            strict=True,
+        )
+    )
+    observed = {name for pair in pairs for name in pair}
     unknown = sorted(observed.difference(node_index))
     if unknown:
         raise ValueError(f"Regression graph contains unknown nodes: {unknown}")
+    self_loops = sorted(source for source, target in pairs if source == target)
+    if self_loops:
+        raise ValueError(f"Regression graph contains self-loops: {self_loops}")
+    expected_pairs = {
+        (source, target)
+        for source in names
+        for target in names
+        if source != target
+    }
+    observed_pairs = set(pairs)
+    if len(observed_pairs) != len(pairs) or observed_pairs != expected_pairs:
+        missing_pairs = sorted(expected_pairs.difference(observed_pairs))
+        pair_counts = Counter(pairs)
+        duplicate_pairs = sorted(
+            pair for pair, count in pair_counts.items() if count > 1
+        )
+        raise ValueError(
+            "Regression directed-pair closure mismatch: "
+            f"missing={missing_pairs}, duplicates={duplicate_pairs}"
+        )
+    expected_labels = [f"{source}->{target}" for source, target in pairs]
+    observed_labels = dated["directed_edge"].astype(str).tolist()
+    mismatches = [
+        (observed, expected)
+        for observed, expected in zip(observed_labels, expected_labels, strict=True)
+        if observed != expected
+    ]
+    if mismatches:
+        raise ValueError(
+            "Regression directed_edge labels disagree with explanatory/dependent pairs: "
+            f"{mismatches[:5]}"
+        )
     adjacency = np.zeros((len(names), len(names)), dtype=np.float32)
     source_index = dated["explanatory_futures"].map(node_index).to_numpy(dtype=np.int64)
     target_index = dated["dependent_futures"].map(node_index).to_numpy(dtype=np.int64)
@@ -305,6 +467,38 @@ def build_daily_regression_graph(
     )
 
 
+def build_available_regression_graph(
+    edge_features: pd.DataFrame,
+    cutoff_at: str | pd.Timestamp,
+    node_order: Sequence[str],
+    *,
+    availability_path: str | Path = DEFAULT_REGRESSION_AVAILABILITY_PATH,
+) -> DailyRegressionGraphData:
+    """Build the latest regression graph whose measured availability is causal."""
+    names = _validate_node_order(node_order)
+    availability = load_regression_availability_manifest(
+        availability_path, node_order=names
+    )
+    snapshot = select_regression_snapshot_asof(availability, cutoff_at)
+    graph = build_daily_regression_graph(
+        edge_features, snapshot["forecast_date"], names
+    )
+    if graph.train_end_date != snapshot["train_end_date"]:
+        raise ValueError(
+            "Regression availability train_end_date disagrees with edge outputs"
+        )
+    return DailyRegressionGraphData(
+        graph.node_names,
+        graph.adjacency,
+        graph.edge_index,
+        graph.edge_weight,
+        graph.forecast_date,
+        graph.train_end_date,
+        graph.edge_frame,
+        pd.Timestamp(snapshot["available_at"]),
+    )
+
+
 def build_daily_dual_graph_snapshot(
     edge_features: pd.DataFrame,
     forecast_date: str | pd.Timestamp,
@@ -313,7 +507,10 @@ def build_daily_dual_graph_snapshot(
     results_dir: str | Path = DEFAULT_RESULTS_DIR,
     graph_path: str | Path = DEFAULT_GRAPH_PATH,
 ) -> DailyDualGraphSnapshot:
-    """Build independent prior and regression graph structures for one day."""
+    """Build legacy date-aligned graphs without asserting intraday availability.
+
+    V1 intraday consumers must use :func:`build_available_regression_graph`.
+    """
     names = tuple(node_order) if node_order is not None else load_node_order(results_dir)
     prior = build_economic_prior_graph(names, graph_path)
     regression = build_daily_regression_graph(edge_features, forecast_date, names)

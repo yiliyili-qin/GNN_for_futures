@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 from pandas.testing import assert_frame_equal
 
-from utils import (
+from gnn_for_futures.features.technical import (
     FUNDAMENTAL_FACTOR_COLUMNS,
     INVENTORY_FACTOR_COLUMNS,
     calculate_fundamental_factors,

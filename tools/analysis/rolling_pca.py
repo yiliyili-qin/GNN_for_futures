@@ -9,7 +9,6 @@ import numpy as np
 import pandas as pd
 
 
-ROOT = Path(__file__).resolve().parents[1]
 EXCLUDED = {"underlying_symbol", "datetime", "trading_date", "dominant_id", "total_turnover"}
 
 
@@ -129,9 +128,9 @@ def analyze_symbol(path: Path, window_days: int, max_components: int) -> dict[st
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--data-dir", type=Path, default=ROOT / "data/raw_data/15min")
-    parser.add_argument("--graph", type=Path, default=ROOT / "data/graph_data/economic_graph.csv")
-    parser.add_argument("--output", type=Path, default=ROOT / "pca.csv")
+    parser.add_argument("--data-dir", type=Path, default=Path("data/raw_data/15min"))
+    parser.add_argument("--graph", type=Path, default=Path("data/graph_data/economic_graph.csv"))
+    parser.add_argument("--output", type=Path, default=Path("pca.csv"))
     parser.add_argument("--window-days", type=int, default=60)
     parser.add_argument("--max-components", type=int, default=40)
     parser.add_argument("--symbols", nargs="+", help="Subset for smoke tests")

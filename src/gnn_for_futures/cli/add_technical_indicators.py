@@ -3,11 +3,12 @@
 from __future__ import annotations
 
 import argparse
+import os
 from pathlib import Path
 
 import pandas as pd
 
-from utils import calculate_technical_indicators
+from gnn_for_futures.features.technical import calculate_technical_indicators
 
 
 INDICATOR_COLUMNS = (
@@ -44,6 +45,18 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
+def _atomic_write_csv(frame: pd.DataFrame, path: Path) -> None:
+    temporary = path.with_name(f".{path.name}.tmp")
+    if temporary.is_symlink() or (temporary.exists() and not temporary.is_file()):
+        raise ValueError("temporary CSV path must be a regular file or not yet exist")
+    try:
+        frame.to_csv(temporary, index=False)
+        os.replace(temporary, path)
+    finally:
+        if temporary.exists() and not temporary.is_symlink():
+            temporary.unlink()
+
+
 def add_indicators(path: Path, bars_per_trading_day: int, dry_run: bool) -> tuple[int, int]:
     frame = pd.read_csv(path, low_memory=False)
     if "datetime" not in frame.columns:
@@ -57,7 +70,7 @@ def add_indicators(path: Path, bars_per_trading_day: int, dry_run: bool) -> tupl
         frame.loc[:, raw_columns], bars_per_trading_day=bars_per_trading_day
     )
     if not dry_run:
-        features.to_csv(path, index=False)
+        _atomic_write_csv(features, path)
     return len(features), len(features.columns) - len(raw_columns)
 
 
