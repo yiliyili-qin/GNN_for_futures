@@ -19,8 +19,19 @@ env/
 data/raw_data/
 data/processed/
 
-# Generated regression and analysis outputs
-linear_regression_test/results/
+# Generated experiment outputs from any analysis directory
+**/results/
+
+# Generated binary and array artifacts
+*.npz
+*.npy
+*.parquet
+*.pkl
+*.pickle
+*.joblib
+*.h5
+*.hdf5
+*.feather
 
 # Generated graph visualizations and vendored browser assets
 data/graph_data/*.csv
@@ -40,3 +51,13 @@ data/graph_data/futures_granger_causality_graph.html
 .DS_Store
 Thumbs.db
 desktop.ini
+# Private market data, local tooling, and non-release research artifacts
+/data/
+/.vscode/
+/TOP_faliure/
+*.tar.gz
+*.sftp
+# Results/checkpoints are staged only by an explicit release allowlist.
+/models_performance/
+*.pt
+*.pth

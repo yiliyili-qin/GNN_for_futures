@@ -47,7 +47,7 @@ class ShockFollowGraphMixer(nn.Module):
         *,
         temporal_hidden_dim: int = 13,
         attention_history_length: int = 40,
-        expected_num_futures: int | None = 44,
+        expected_num_futures: int | None = 39,
         role_dim: int = 32,
         neighbor_capacity: int = 5,
         head_hidden_dim: int = 100,

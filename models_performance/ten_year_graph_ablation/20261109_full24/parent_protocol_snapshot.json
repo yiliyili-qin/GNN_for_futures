@@ -1,0 +1,607 @@
+{
+  "schema": "ten_year_independent_data_domain",
+  "version": "2.0.0",
+  "status": "READY",
+  "frozen_parent": {
+    "path": "C:\\projects\\helloworld\\python\\GNN_FOR_FUTURES\\model\\Model\\frozen-base.json",
+    "sha256": "b1927fb0dbd2849e1d40f10742a46346ee30e930d9c3a5d64fedc47bbe96151d"
+  },
+  "inherited": {
+    "interface": {
+      "row_key": [
+        "split",
+        "cutoff_timestamp",
+        "source",
+        "target"
+      ],
+      "required_outputs": [
+        "q",
+        "d"
+      ],
+      "q": "P(follow)",
+      "d": "P(same_direction_given_follow)",
+      "joint_order": [
+        "N",
+        "O",
+        "S"
+      ],
+      "joint_conversion": [
+        "1-q",
+        "q*(1-d)",
+        "q*d"
+      ],
+      "joint_input_conversion": {
+        "q": "pO+pS",
+        "d": "pS/q if q>0 else 0.5"
+      },
+      "probability_sum_tolerance": 1e-06,
+      "nonfinite_or_out_of_range": "fail_run",
+      "native_q_preserved_for_AP": true,
+      "common_masks_and_schedule": true,
+      "model_specific_row_dropping": false,
+      "architecture": "heterogeneous_allowed_same_information_set",
+      "unavailable_input_policy": "shared_predeclared_mask_or_train_fitted_imputation_with_indicator_never_model_specific_drop"
+    },
+    "classification": {
+      "primary": "macro_f1",
+      "class_order": [
+        "N",
+        "O",
+        "S"
+      ],
+      "follow_threshold": 0.5,
+      "follow_operator": ">",
+      "direction_threshold": 0.5,
+      "direction_operator": ">",
+      "direction_tie": "O",
+      "decision": "N if q<=0.5 else S if d>0.5 else O",
+      "joint_argmax": false,
+      "metrics": [
+        "macro_f1",
+        "balanced_accuracy",
+        "per_class_precision_recall_f1_support",
+        "confusion_counts",
+        "confusion_row_normalized",
+        "follow_AP",
+        "OVR_macro_AP",
+        "log_loss",
+        "multiclass_Brier",
+        "ECE",
+        "accuracy"
+      ],
+      "aggregation": "pooled_common_rows_no_negative_sampling",
+      "zero_division_PRF1": 0,
+      "macro_f1_denominator": 3,
+      "balanced_accuracy": "mean_recall_over_positive_support_classes; report_supported_class_count",
+      "AP_no_positive_or_no_negative": "null_with_reason",
+      "OVR_macro_AP": "null_unless_all_three_AP_defined",
+      "empty_evaluation": "fail_run",
+      "log_loss_clip_epsilon": 1e-12,
+      "log_loss_after_clip": "renormalize_each_row",
+      "Brier": "mean_sum_over_three_classes_squared_error_unclipped",
+      "ECE": {
+        "bins": 10,
+        "edges": "equal_width_0_to_1",
+        "confidence": "probability_of_hierarchical_predicted_class",
+        "boundary": "left_closed_right_open_last_includes_1",
+        "empty_bins": "skip_zero_weight"
+      }
+    },
+    "selection": {
+      "metric": "validation_macro_f1",
+      "direction": "maximize",
+      "tie": "earliest_epoch_then_lexicographic_candidate_id",
+      "seeds": [
+        20261002,
+        20261003,
+        20261004
+      ],
+      "max_candidates_per_family": 1,
+      "max_epochs": 40,
+      "patience": 7,
+      "min_delta": 0.0,
+      "validation_frequency_epochs": 1,
+      "batch_size": 16,
+      "optimizer": "Adam",
+      "learning_rate": 0.001,
+      "weight_decay": 1e-05,
+      "scheduler": "none",
+      "gradient_clip": null,
+      "seed_selection": "none_report_all_and_mean_std",
+      "family_summary": "mean_validation_macro_f1_across_all_seeds",
+      "test_tuning": false,
+      "legacy_checkpoint_selection": "validation_follow_AP_historical_reference_only",
+      "legacy_multiplier": "m10_inherited_fixed_not_reselected",
+      "loss_and_architecture": "preregister_per_family_before_training; no_test_adaptation",
+      "budget_reporting": [
+        "parameters",
+        "optimizer_steps",
+        "epochs",
+        "wall_seconds",
+        "device",
+        "peak_memory",
+        "all_trials_including_failed",
+        "information_set",
+        "loss",
+        "initialization",
+        "software_versions"
+      ]
+    },
+    "backtest": {
+      "primary_allocator": "shifted_c0_L1_uncapped",
+      "multiplier": 10.0,
+      "alpha": "sum_i(source_shock_i * off_diagonal_ij * (q_ij>0.5) * q_ij*(2*d_ij-1)*source_return_i)",
+      "utility": "10*alpha/sigma",
+      "sigma": {
+        "prior_trading_days": 10,
+        "input": "signed_bar_returns",
+        "ddof": 1,
+        "all_nodes_finite_positive_required": true
+      },
+      "raw_mapping": {
+        "negative": "exp(u)-2",
+        "positive": "2-exp(-u)",
+        "zero": 0.0
+      },
+      "normalization": "raw/sum(abs(raw))",
+      "gross_target_when_nonzero": 1.0,
+      "single_name_cap": null,
+      "all_zero": "explicit_liquidation_to_cash",
+      "denominator_fallback": "none",
+      "signal_schedule": "common_input_valid_cutoffs_with_valid_sigma_and_next_complete_same_trading_date_open; independent_of_q_d_labels",
+      "duplicate_execution_target": "fail_until_shared_policy_versioned",
+      "position_units": "fractional_continuous_price_not_futures_contracts",
+      "execution": "next_complete_executable_open_same_panel_trading_date",
+      "rebalance_units": "pretrade_equity*target_weight/open",
+      "between_signals": "hold_units_mark_close_to_open_and_open_to_close",
+      "forced_exits": [
+        "trading_date_end",
+        "last_complete_close_before_missing_common_quote",
+        "last_complete_close_before_dominant_contract_change"
+      ],
+      "boundary_schedule": "retrospective_zero_cost_liquidation_not_strict_PIT",
+      "reentry": "only_next_valid_scheduled_signal",
+      "nonpositive_equity": "fail_no_clipping",
+      "initial_equity": 1.0,
+      "base_fee_bps": 0,
+      "fee_stress_bps": [
+        1,
+        2,
+        5
+      ],
+      "stress": {
+        "mode": "fixed_zero_cost_path_not_self_financing_net_ledger",
+        "cost": "bps/10000*sum(abs(trade_units)*trade_price)",
+        "equity": "zero_cost_equity-cumulative_absolute_cost",
+        "include": "entries_rebalances_forced_exits",
+        "reinvest_or_resize": false
+      },
+      "margin_slippage_impact_financing": "not_modeled"
+    },
+    "risk": {
+      "annual_days": 252,
+      "risk_free": 0.0,
+      "daily_calendar": "all_split_panel_trading_dates_including_cash_days",
+      "daily_return": "end_equity/previous_day_end_equity-1_initial_equity_1",
+      "sharpe": "sqrt(252)*mean(daily_return)/sample_std(daily_return)",
+      "annual_return": "(end_equity/initial_equity)^(252/day_count)-1",
+      "annual_volatility": "sqrt(252)*sample_std(daily_return)",
+      "drawdown": "max(1-equity/running_peak_including_initial_equity)_all_open_and_close_marks",
+      "calmar": "annual_return/max_drawdown",
+      "undefined_ratio": "null_with_reason_for_zero_denominator_or_insufficient_days",
+      "turnover": "sum_trade_abs_notional/pretrade_equity_including_forced_exits",
+      "required": [
+        "total_return",
+        "annual_return",
+        "annual_volatility",
+        "sharpe",
+        "bar_max_drawdown",
+        "calmar",
+        "turnover",
+        "net_exposure",
+        "gross_exposure",
+        "cash_fraction",
+        "max_abs_weight",
+        "max_abs_weight_over_gross",
+        "HHI",
+        "monthly_returns",
+        "monthly_classification",
+        "monthly_support"
+      ],
+      "cash_definition": "all_units_zero_not_margin_cash",
+      "drift": "gross_1_only_at_nonzero_target_rebalances_report_realized_drift",
+      "composite_score": null,
+      "bootstrap": {
+        "method": "paired_non_circular_moving_trading_day_blocks",
+        "block_days": 5,
+        "repetitions": 10000,
+        "seed": 20261023,
+        "confidence": 0.95,
+        "interval": "percentile",
+        "metrics": [
+          "macro_f1_difference",
+          "mean_daily_return_difference",
+          "sharpe_difference"
+        ],
+        "pairing": "same_days_all_models_all_rows_within_day_then_recompute",
+        "short_sample": "null_if_fewer_than_5_days",
+        "invalid_replicates": "report_count_null_CI_if_fewer_than_9500_valid",
+        "multiplicity": "unadjusted_descriptive_not_confirmatory"
+      }
+    }
+  },
+  "data": {
+    "node_order": [
+      "A",
+      "AG",
+      "AL",
+      "AU",
+      "B",
+      "BU",
+      "C",
+      "CF",
+      "CS",
+      "HC",
+      "I",
+      "J",
+      "JM",
+      "L",
+      "M",
+      "MA",
+      "OI",
+      "P",
+      "PP",
+      "RB",
+      "RM",
+      "RU",
+      "SF",
+      "SM",
+      "TA",
+      "V",
+      "Y"
+    ],
+    "coverage_candidates": [
+      "A",
+      "AG",
+      "AL",
+      "AU",
+      "B",
+      "BU",
+      "C",
+      "CF",
+      "CS",
+      "CU",
+      "FB",
+      "FG",
+      "HC",
+      "I",
+      "J",
+      "JD",
+      "JM",
+      "L",
+      "M",
+      "MA",
+      "NI",
+      "OI",
+      "P",
+      "PB",
+      "PP",
+      "RB",
+      "RM",
+      "RU",
+      "SF",
+      "SM",
+      "SN",
+      "SR",
+      "TA",
+      "V",
+      "Y"
+    ],
+    "qualified_symbols": [
+      "A",
+      "AG",
+      "AL",
+      "AU",
+      "B",
+      "BU",
+      "C",
+      "CF",
+      "CS",
+      "HC",
+      "I",
+      "J",
+      "JM",
+      "L",
+      "M",
+      "MA",
+      "OI",
+      "P",
+      "PP",
+      "RB",
+      "RM",
+      "RU",
+      "SF",
+      "SM",
+      "TA",
+      "V",
+      "Y"
+    ],
+    "window_start": "2016-08-26",
+    "window_end_exclusive": "2026-08-26",
+    "anchor": "latest date observed by all locally retained raw symbols plus one calendar day",
+    "calendar_months": 120,
+    "split_months": [
+      78,
+      12,
+      30
+    ],
+    "splits": {
+      "train": {
+        "samples": 6519,
+        "first": "2017-10-31T14:15:00.000000000",
+        "last": "2023-02-24T14:45:00.000000000",
+        "nominal_start": "2016-08-26",
+        "end_exclusive": "2023-02-26",
+        "embargo_start": "2016-08-26",
+        "unsupervised_cutoffs_excluded": 4972,
+        "supervised_pairs": 445138
+      },
+      "validation": {
+        "samples": 765,
+        "first": "2023-03-28T09:30:00.000000000",
+        "last": "2024-02-22T14:30:00.000000000",
+        "nominal_start": "2023-02-26",
+        "end_exclusive": "2024-02-26",
+        "embargo_start": "2023-03-28",
+        "unsupervised_cutoffs_excluded": 1215,
+        "supervised_pairs": 37310
+      },
+      "test": {
+        "samples": 2434,
+        "first": "2024-03-26T14:30:00.000000000",
+        "last": "2026-08-25T14:15:00.000000000",
+        "nominal_start": "2024-02-26",
+        "end_exclusive": "2026-08-26",
+        "embargo_start": "2024-03-26",
+        "unsupervised_cutoffs_excluded": 2849,
+        "supervised_pairs": 128596
+      }
+    },
+    "end_exclusive": true,
+    "bar_minutes": 15,
+    "sequence_bars": 40,
+    "thresholds": {
+      "quantile": 0.95,
+      "quantile_method": "linear",
+      "window": "expanding_before_effective_month",
+      "fit_returns": "train_only",
+      "min_trading_days": 20,
+      "min_finite_returns": 500,
+      "fallback": "mean_of_eligible_symbols_own_thresholds",
+      "no_eligible_fallback": "unavailable",
+      "fit_end_strictly_before_month_start": true
+    },
+    "embargo": {
+      "common_trading_days_min": 21,
+      "calendar_days_min": 15,
+      "history_start_strictly_after_previous_end": true
+    },
+    "warmup": "Train-only thresholds fitted strictly before effective month; >=20 days and >=500 finite returns; then 40 valid history bars. No pre-window threshold fit; no validation/test fit.",
+    "history_boundary": "Validation/test history starts strictly after previous nominal end; embargo deducted from beginning, never extends end.",
+    "target_rule": "Exact cutoff+15m observed target on same trading_date; both cutoff and target timestamps inside nominal split; never later substitute.",
+    "expected_calendar": "observed union market dates is diagnostic only, not an authoritative exchange session calendar",
+    "panel_path": "data/v2_27node/bar_panel.npz",
+    "panel_shape": null,
+    "panel_sha256": "5f36ae2c9ac19f0d875f0e323b0dd8979c92e7d7fcee8840e828d33aa5aa3e32",
+    "candidate_quote_panel": {
+      "path": "C:\\projects\\helloworld\\python\\GNN_FOR_FUTURES\\model\\Model\\models_performance\\ten_year\\data\\ten_year_data_candidate_quotes.npz",
+      "sha256": "fd6c2e664d9dcbf29c2572833a08436509e960a1acbb76c27878912455df3e49",
+      "shape": [
+        86968,
+        35
+      ],
+      "status": "candidate_quotes_only_NOT_TRAINING_READY",
+      "fields": {
+        "timestamps": [
+          86968
+        ],
+        "node_order": [
+          35
+        ],
+        "open": [
+          86968,
+          35
+        ],
+        "high": [
+          86968,
+          35
+        ],
+        "low": [
+          86968,
+          35
+        ],
+        "close": [
+          86968,
+          35
+        ],
+        "volume": [
+          86968,
+          35
+        ],
+        "row_observed": [
+          86968,
+          35
+        ],
+        "dominant_id": [
+          86968,
+          35
+        ],
+        "trading_dates": [
+          86968,
+          35
+        ]
+      },
+      "no_backfill": true,
+      "contains_features_thresholds_or_labels": false
+    },
+    "history_policy": "40 common valid-return bars; session gaps allowed, not contiguous wall-clock bars",
+    "quality_limitation": "Not certified; observed market-date coverage only"
+  },
+  "economic_graph": {
+    "rule": "Delete original 39 nodes outside observed ten-year candidates; symmetric binary induced graph",
+    "node_order": [
+      "A",
+      "AG",
+      "AL",
+      "AU",
+      "B",
+      "BU",
+      "C",
+      "CF",
+      "CS",
+      "HC",
+      "I",
+      "J",
+      "JM",
+      "L",
+      "M",
+      "MA",
+      "OI",
+      "P",
+      "PP",
+      "RB",
+      "RM",
+      "RU",
+      "SF",
+      "SM",
+      "TA",
+      "V",
+      "Y"
+    ],
+    "status": "ready",
+    "source_sha256": "7da5be963fe7956d2d91ca92fefd02180d0ca45402b789800dd65c3f08406940"
+  },
+  "initialization": {
+    "mode": "scratch",
+    "legacy_39_checkpoint_allowed": false
+  },
+  "remote_evidence": {
+    "host": "[private research host omitted]",
+    "path": "[private research directory omitted]",
+    "panel_bytes_verified": false,
+    "returncode": 0,
+    "reachable": true,
+    "manifest_sha256": "abffdfc4c7618ebd72f5de642b7a646c905f7b6268f106f09af987be7c5bc3f7",
+    "row_count": 92778,
+    "materialization_sha256": "d9bf352334aca4916523b8575be242e1be9f3802ff4a912b46fe350565f21ce6",
+    "local_source_hash_matches": [
+      "A",
+      "AG",
+      "AL",
+      "AU",
+      "B",
+      "BU",
+      "C",
+      "CF",
+      "CS",
+      "CY",
+      "EB",
+      "EG",
+      "FU",
+      "HC",
+      "I",
+      "J",
+      "JM",
+      "L",
+      "LH",
+      "LU",
+      "M",
+      "MA",
+      "NR",
+      "OI",
+      "P",
+      "PF",
+      "PG",
+      "PK",
+      "PP",
+      "RB",
+      "RM",
+      "RU",
+      "SC",
+      "SF",
+      "SM",
+      "TA",
+      "UR",
+      "V",
+      "Y"
+    ]
+  },
+  "blockers": [],
+  "training_entry_changes": [
+    "Read this independent protocol, reject status != READY",
+    "Replace hardcoded node count/order and 39-node graph by induced qualified graph",
+    "Use exact nominal calendar boundaries and shared effective masks, not 70/10/20 row ratios",
+    "Materialize train-only thresholds and exact horizon labels; report actual first/last sample and purge counts",
+    "Initialize all models from scratch and select validation macro-F1 with frozen mapping and risk metrics"
+  ],
+  "training_adapter": {
+    "schema": "ten_year_npz_training_v1",
+    "approved": true,
+    "eligibility_audit_passed": true,
+    "split_months": [
+      78,
+      12,
+      30
+    ],
+    "embargo_verified": true,
+    "audit_path": "data/v2_27node/audit.json",
+    "audit_sha256": "fdf1ad9636c1a1ce35e0cc332c1f575a6aa4dd0562ca60f078ea9b6f0f95f6aa",
+    "data_sha256": "1f2bbbb8588b37690742dc1897f7c558124709323f5a944c560da16d32c4b426",
+    "node_order": [
+      "A",
+      "AG",
+      "AL",
+      "AU",
+      "B",
+      "BU",
+      "C",
+      "CF",
+      "CS",
+      "HC",
+      "I",
+      "J",
+      "JM",
+      "L",
+      "M",
+      "MA",
+      "OI",
+      "P",
+      "PP",
+      "RB",
+      "RM",
+      "RU",
+      "SF",
+      "SM",
+      "TA",
+      "V",
+      "Y"
+    ],
+    "sequence_bars": 40,
+    "models": {
+      "full": {
+        "loss": "hierarchical_source_event_balanced_train",
+        "initialization": "scratch",
+        "kwargs": {
+          "learnable_fusion": false
+        }
+      },
+      "history": {
+        "loss": "hierarchical_source_event_balanced_train",
+        "initialization": "scratch",
+        "kwargs": {
+          "learnable_fusion": false
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "schema": "ten_year_binary_primary_dual_backtest",
+  "version": "1.0.0",
+  "parent_protocol": "models_performance/ten_year/protocol.v2.json",
+  "parent_sha256": "30e5c000fca2acd0dc7d6c2da8d36385a6712d8428d77217a381f20d01e3e925",
+  "data_policy": "immutable_v2_27node_120_nominal_months_original_supervised_masks",
+  "auxiliary_input_sha256": {
+    "daily_returns.csv": "b4bdeaad195bbd1b638623b03e4e3555286831ddb7ade6e025c0b38f6f774432",
+    "quote_manifest.json": "e0a11fc85190f776ba3ec2f2a1742ed9e002b4ee884616e5b5a3b24ef997f369"
+  },
+  "mapping": {"N": 0, "O": 1, "S": 1},
+  "families": ["full", "HH", "gm"],
+  "reported_models": ["full", "HH", "HF", "gm"],
+  "negative_multipliers": [1.0, 3.0],
+  "loss": {
+    "follow": "source_event_mean_CE_weights_[c*T/(2*nN),T/(2*(nO+nS))]",
+    "normalization": "valid_target_count_per_source_then_mean_sources_not_sum_weights",
+    "own_direction": "truth_follow_masked_source_event_mean_unweighted_CE",
+    "own_total": "follow_plus_direction_no_relative_rescaling",
+    "gm_total": "follow_only_no_direction_parameters",
+    "note": "c=3_changes_relative_shared_backbone_gradients_not_direction_loss_definition"
+  },
+  "selection": {
+    "metric": "validation_binary_macro_f1",
+    "ties": "earliest_strict_maximum",
+    "follow_threshold": 0.5,
+    "follow_operator": ">",
+    "seeds": [20261002, 20261003, 20261004],
+    "max_epochs": 40,
+    "patience": 7,
+    "batch_size": 16,
+    "learning_rate": 0.001,
+    "weight_decay": 0.00001,
+    "optimizer": "Adam",
+    "scheduler": "none",
+    "gradient_clip": null,
+    "test_tuning": false
+  },
+  "HF": {
+    "q": "same_seed_same_coefficient_HH",
+    "d": "same_seed_same_coefficient_full",
+    "binary_alias": "HH",
+    "backtest_alias": false,
+    "independent_training": false
+  },
+  "backtest": {
+    "role": "auxiliary_not_selection",
+    "own_direction": "conditional_(2*d-1)_original_three_class_alpha",
+    "gm_direction": "fixed_same_as_source_previously_approved",
+    "clock": "label_independent_common_valid40_history_same_nominal_boundaries_and_effective_embargo",
+    "graphs": "verified_original_daily_graphs_plus_missing_schedule_dates_fit_from_frozen_daily_returns_only",
+    "quotes": "hash_verified_frozen_candidate_exact_panel_overlap_Unicode_no_pickle",
+    "multiplier": 10,
+    "sigma_prior_trading_days": 10,
+    "sigma_ddof": 1,
+    "execution": "next_complete_same_trading_date_open_duplicate_execution_fail",
+    "allocation": "shifted_c0_L1_gross1_uncapped_zero_cash",
+    "base_fee_bps": 0,
+    "fee_stress_bps": [1, 2, 5],
+    "cost_mode": "fixed_zero_cost_path_not_fee_feedback",
+    "risk": "full_calendar_initial_open_close_marks"
+  },
+  "bootstrap": {"block_days": 5, "repetitions": 10000, "seed": 20261023, "confidence": 0.95, "paired": true, "seed_pooling": false, "multiplicity": "unadjusted_descriptive"},
+  "strict_pit": false,
+  "fresh_oos": false,
+  "previously_inspected_test": true
+}

@@ -1,0 +1,25 @@
+{
+  "variant": "regression_only",
+  "seed": 20261003,
+  "negative_multiplier": 1.0,
+  "channels": [
+    false,
+    true,
+    false
+  ],
+  "epochs": 22,
+  "best_epoch": 15,
+  "optimizer_steps": 8976,
+  "validation_macro_f1": 0.5610227873821345,
+  "test_macro_f1": 0.628989484025004,
+  "checkpoint_sha256": "527183f6823a6c27551918481e6393c2ebd2611d6d40d2c9f638be6329c0ba82",
+  "prediction_sha256": {
+    "validation": "5fb3ef3714e6c0c3a0447aaf390d5ebd2b28db0e2101527b2cb7ec89b7c169be",
+    "test": "5b8726905832d6b2b52f21e1f2a909e1662c544fa406adee4430cc7c8e489b34"
+  },
+  "seconds": 331.0803826000774,
+  "parameters": 11587,
+  "device": "cpu",
+  "direction_head": false,
+  "peak_cuda_memory_bytes": null
+}

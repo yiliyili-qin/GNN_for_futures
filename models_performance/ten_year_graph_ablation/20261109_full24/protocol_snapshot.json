@@ -1,0 +1,225 @@
+{
+  "schema": "ten_year_follow_only_graph_ablation",
+  "version": "1.0.0",
+  "data_policy": "immutable_v2_27node_original_masks_histories_thresholds_splits_embargo",
+  "mapping": {
+    "N": 0,
+    "O": 1,
+    "S": 1
+  },
+  "required_outputs": [
+    "q"
+  ],
+  "negative_multiplier": 1.0,
+  "initialization": "all cells scratch Follow-only; Full is NOT a bitwise reproduction of old dual-head c1 Full",
+  "training": {
+    "seeds": [
+      20261002,
+      20261003,
+      20261004
+    ],
+    "max_epochs": 40,
+    "patience": 7,
+    "batch_size": 16,
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "optimizer": "Adam",
+    "direction_loss": false,
+    "scheduler": "none",
+    "gradient_clip": null,
+    "loss": "source_event_mean_weighted_binary_CE_valid_target_count_not_sum_weights"
+  },
+  "selection": {
+    "metric": "validation_binary_macro_f1",
+    "ties": "earliest_strict_maximum",
+    "follow_threshold": 0.5,
+    "follow_operator": ">",
+    "seeds": [
+      20261002,
+      20261003,
+      20261004
+    ],
+    "max_epochs": 40,
+    "patience": 7,
+    "batch_size": 16,
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05,
+    "optimizer": "Adam",
+    "scheduler": "none",
+    "gradient_clip": null,
+    "test_tuning": false
+  },
+  "channels": {
+    "full": [
+      true,
+      true,
+      true
+    ],
+    "no_economic": [
+      false,
+      true,
+      true
+    ],
+    "no_regression": [
+      true,
+      false,
+      true
+    ],
+    "no_attention": [
+      true,
+      true,
+      false
+    ],
+    "economic_only": [
+      true,
+      false,
+      false
+    ],
+    "regression_only": [
+      false,
+      true,
+      false
+    ],
+    "attention_only": [
+      false,
+      false,
+      true
+    ],
+    "none": [
+      false,
+      false,
+      false
+    ]
+  },
+  "channel_order": [
+    "economic",
+    "causal_regression",
+    "attention"
+  ],
+  "fusion": {
+    "base_weights": [
+      0.2,
+      0.4,
+      0.4
+    ],
+    "learnable": false,
+    "normalization": "renormalize_surviving_global_weights_as_alpha39_ablation",
+    "topology_threshold": 0.1,
+    "none": "empty E carrier; zero graph values/availability/pair features/neighbors; node-only LSTM and same Follow head"
+  },
+  "deletions": [
+    [
+      "full",
+      "no_economic"
+    ],
+    [
+      "full",
+      "no_regression"
+    ],
+    [
+      "full",
+      "no_attention"
+    ],
+    [
+      "no_economic",
+      "regression_only"
+    ],
+    [
+      "no_economic",
+      "attention_only"
+    ],
+    [
+      "no_regression",
+      "economic_only"
+    ],
+    [
+      "no_regression",
+      "attention_only"
+    ],
+    [
+      "no_attention",
+      "economic_only"
+    ],
+    [
+      "no_attention",
+      "regression_only"
+    ],
+    [
+      "economic_only",
+      "none"
+    ],
+    [
+      "regression_only",
+      "none"
+    ],
+    [
+      "attention_only",
+      "none"
+    ]
+  ],
+  "chains": [
+    [
+      "E",
+      "R",
+      "A"
+    ],
+    [
+      "E",
+      "A",
+      "R"
+    ],
+    [
+      "R",
+      "E",
+      "A"
+    ],
+    [
+      "R",
+      "A",
+      "E"
+    ],
+    [
+      "A",
+      "E",
+      "R"
+    ],
+    [
+      "A",
+      "R",
+      "E"
+    ]
+  ],
+  "aliases": {
+    "FF": "full",
+    "FH": "full"
+  },
+  "independent_trials": 24,
+  "alias_reason": "FF=Full q+Full d and FH=Full q+History d; direction removed, identical Full q and fixed-direction replay",
+  "backtest": {
+    "role": "auxiliary_not_selection",
+    "own_direction": "fixed_same_as_source_user_approved_20261031",
+    "gm_direction": "fixed_same_as_source_previously_approved",
+    "clock": "label_independent_common_valid40_history_same_nominal_boundaries_and_effective_embargo",
+    "graphs": "verified_original_daily_graphs_plus_missing_schedule_dates_fit_from_frozen_daily_returns_only",
+    "quotes": "hash_verified_frozen_candidate_exact_panel_overlap_Unicode_no_pickle",
+    "multiplier": 10,
+    "sigma_prior_trading_days": 10,
+    "sigma_ddof": 1,
+    "execution": "next_complete_same_trading_date_open_duplicate_execution_fail",
+    "allocation": "shifted_c0_L1_gross1_uncapped_zero_cash",
+    "base_fee_bps": 0,
+    "fee_stress_bps": [
+      1,
+      2,
+      5
+    ],
+    "cost_mode": "fixed_zero_cost_path_not_fee_feedback",
+    "risk": "full_calendar_initial_open_close_marks",
+    "alpha": "sum_i(source_shock_i*off_diagonal_ij*(q_ij>0.5)*q_ij*source_return_i)",
+    "three_class_direction_claim": false
+  },
+  "strict_pit": false,
+  "fresh_oos": false,
+  "previously_inspected_test": true,
+  "comparisons": "all seeds and all 12 one-channel deletion edges; descriptive, no seed/variant/test selection"
+}

@@ -42,7 +42,7 @@ DEFAULT_SOURCE_ROOT = Path(".")
 DEFAULT_RAW_DIR = Path("data/raw_data/15min")
 DEFAULT_OUTPUT_DIR = Path("data/shock_follow_v1")
 DEFAULT_CONTRACT = Path("data/contracts/bar_availability.retrospective.json")
-DEFAULT_ECONOMIC_GRAPH = Path("data/graph_data/futures_graph_smm_simplified.html")
+DEFAULT_ECONOMIC_GRAPH = Path("data/graph_data/futures_economic_prior_39.html")
 
 
 def parse_args(argv: Sequence[str] | None = None) -> argparse.Namespace:

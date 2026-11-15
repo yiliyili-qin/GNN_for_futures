@@ -133,8 +133,9 @@ def scale_attention_strength(
     robust_quantile: float = 0.75,
     epsilon: float = 1e-8,
     clip_max: float = 2.0,
+    fixed_scale: float | None = None,
 ) -> TorchAttentionGraph:
-    """Scale absolute attention per sample while retaining signed raw scores."""
+    """Scale absolute attention with an optional frozen training-history scale."""
     raw, unbatched = _require_square_batch(current_raw, "current_raw")
     available, availability_unbatched = _require_square_batch(
         current_available, "current_available"
@@ -151,6 +152,9 @@ def scale_attention_strength(
         raise ValueError("epsilon and clip_max must be positive")
     if not raw.is_floating_point():
         raise TypeError("current_raw must use a floating-point dtype")
+    if fixed_scale is not None:
+        if not torch.isfinite(raw.new_tensor(fixed_scale)) or fixed_scale <= 0.0:
+            raise ValueError("fixed_scale must be finite and positive")
 
     absolute = raw.abs()
     scaled = torch.zeros_like(raw)
@@ -162,10 +166,13 @@ def scale_attention_strength(
         ].gt(0.0)
         values = absolute[batch_index][eligible]
         if values.numel() == 0:
-            scale = raw.new_zeros(())
+            scale = raw.new_zeros(()) if fixed_scale is None else raw.new_tensor(fixed_scale)
             rate = raw.new_zeros(())
         else:
-            scale = torch.quantile(values, robust_quantile).detach()
+            scale = (
+                torch.quantile(values, robust_quantile).detach()
+                if fixed_scale is None else raw.new_tensor(fixed_scale)
+            )
             normalized = torch.clamp(values / (scale + epsilon), 0.0, clip_max)
             sample_scaled = scaled[batch_index].masked_scatter(
                 eligible,
@@ -213,7 +220,7 @@ def fuse_graph_channels(
     *,
     prior_available: Tensor,
     regression_available: Tensor,
-    fusion_weights: tuple[float, float, float] = (0.2, 0.4, 0.4),
+    fusion_weights: tuple[float, float, float] | Tensor = (0.2, 0.4, 0.4),
     threshold: float = 0.6,
 ) -> TorchFusedGraph:
     """Fuse three nonnegative channels and build the nine-field pair schema."""
@@ -251,7 +258,10 @@ def fuse_graph_channels(
             raise TypeError(f"{name} must be boolean")
     if tuple(prior.shape[-2:]) != (node_count, node_count):
         raise ValueError("All graph matrices must have the same node dimensions")
-    weights = prior.new_tensor(fusion_weights)
+    weights = (
+        fusion_weights.to(device=prior.device, dtype=prior.dtype)
+        if isinstance(fusion_weights, Tensor) else prior.new_tensor(fusion_weights)
+    )
     if weights.shape != (3,) or not torch.isfinite(weights).all():
         raise ValueError("fusion_weights must contain three finite values")
     if weights.lt(0.0).any() or not torch.isclose(weights.sum(), weights.new_tensor(1.0)):
@@ -332,7 +342,7 @@ def build_top_k_directed_views(
         raise TypeError("adjacency must be boolean")
     if not scores.is_floating_point() or not torch.isfinite(scores).all():
         raise ValueError("fused_scores must be finite floating-point values")
-    if scores.lt(0.0).any() or scores.gt(1.0).any():
+    if scores.lt(0.0).any() or scores.gt(1.0 + 4 * torch.finfo(scores.dtype).eps).any():
         raise ValueError("fused_scores must be in [0,1]")
     if not isinstance(k, int) or isinstance(k, bool) or k < 1:
         raise ValueError("k must be a positive integer")

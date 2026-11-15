@@ -1,0 +1,3 @@
+# Frozen manifests hash exact source bytes; avoid platform newline conversion.
+* -text
+*.sh text eol=lf

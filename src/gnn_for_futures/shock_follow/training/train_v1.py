@@ -75,7 +75,7 @@ class ModelConfig:
     node_feature_dim: int = len(NODE_FEATURE_SCHEMA)
     temporal_hidden_dim: int = 13
     attention_history_length: int = DEFAULT_SEQUENCE_LENGTH
-    expected_num_futures: int = 44
+    expected_num_futures: int = 39
     role_dim: int = 32
     neighbor_capacity: int = 5
     head_hidden_dim: int = 100

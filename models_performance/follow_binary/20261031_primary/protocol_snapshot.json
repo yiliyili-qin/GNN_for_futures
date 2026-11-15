@@ -1,0 +1,58 @@
+{
+  "schema": "alpha39_follow_binary",
+  "version": "1.0.0",
+  "parent_protocol": "frozen-base.json",
+  "parent_protocol_sha256": "b1927fb0dbd2849e1d40f10742a46346ee30e930d9c3a5d64fedc47bbe96151d",
+  "strict_pit": false,
+  "fresh_oos": false,
+  "previously_inspected_test": true,
+  "task": {
+    "class_order": ["no_follow", "follow"],
+    "mapping": {"N": 0, "O": 1, "S": 1},
+    "unavailable": "excluded_by_original_mask_never_negative",
+    "directed_source_target": true,
+    "data_labels_masks_splits_thresholds": "exact_parent_protocol_no_negative_sampling",
+    "required_outputs": ["q"],
+    "decision": "q > 0.5; tie no_follow",
+    "direction_head": "not_created_not_trained_not_used"
+  },
+  "models": {
+    "full": {"backbone": "ShockFollowGraphMixerV2", "enabled_channels": [true, true, true]},
+    "HH": {"backbone": "ShockFollowGraphMixerV2", "enabled_channels": [false, true, false]},
+    "HF": {"alias_of": "HH", "reason": "HF takes q from History and d from Full; removing d makes HF identical to HH"},
+    "gm": {"backbone": "GraphMixerBaseline", "node_input": "identity", "max_events": 50, "structure_events": 55, "time_dim": 100, "hidden_dim": 100, "num_layers": 2, "head_dim": 100, "dropout": 0.1}
+  },
+  "training": {
+    "initialization": "from_scratch_no_legacy_checkpoint",
+    "loss": "train_balanced_follow_CE_target_mean_per_source_event_then_event_mean",
+    "direction_loss": false,
+    "selection": "validation_binary_macro_f1_earliest_strict_maximum",
+    "budget_seeds_optimizer": "exact_parent_selection_except_binary_metric",
+    "threshold_tuning": false,
+    "test_tuning": false,
+    "seed_selection": false
+  },
+  "classification": {
+    "primary": "macro_f1",
+    "macro_f1_denominator": 2,
+    "metrics": ["macro_f1", "positive_precision_recall_f1", "per_class_precision_recall_f1_support", "confusion", "balanced_accuracy", "accuracy", "follow_AP", "ROC_AUC", "log_loss", "binary_Brier", "ECE"],
+    "binary_Brier": "mean((q-y)^2)_positive_class_only",
+    "undefined_AP_AUC": "null_with_reason_when_no_positive_or_no_negative",
+    "ECE": "10_equal_width_bins_confidence_of_binary_predicted_class",
+    "zero_division_PRF1": 0
+  },
+  "backtest": {
+    "direction_policy": "fixed_same_as_source_user_approved_20261031",
+    "alpha": "sum_i(source_shock_i * off_diagonal_ij * (q_ij>0.5) * q_ij * source_return_i)",
+    "all_other_rules": "exact_parent_backtest_risk_and_independent_signal_schedule",
+    "interpretation": "relationship_detection_plus_fixed_same_direction_strategy_not_direction_prediction",
+    "fee_stress_bps": [1, 2, 5]
+  },
+  "comparisons": {
+    "learned": ["full", "HH", "HF", "gm"],
+    "independent_trained_families": ["full", "HH", "gm"],
+    "deterministic": ["cash", "no_follow", "train_prior", "EW"],
+    "HF_duplicate_not_independent_evidence": true,
+    "bootstrap": "parent_paired_non_circular_5day_10000_replicates_same_seed_same_day_indices"
+  }
+}

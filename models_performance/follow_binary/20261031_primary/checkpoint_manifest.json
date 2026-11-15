@@ -1,0 +1,162 @@
+{
+  "schema": "follow_only_checkpoint_distribution",
+  "node_order": [
+    "A",
+    "AG",
+    "AL",
+    "AU",
+    "B",
+    "BU",
+    "C",
+    "CF",
+    "CS",
+    "CY",
+    "EB",
+    "EG",
+    "FU",
+    "HC",
+    "I",
+    "J",
+    "JM",
+    "L",
+    "LH",
+    "LU",
+    "M",
+    "MA",
+    "NR",
+    "OI",
+    "P",
+    "PF",
+    "PG",
+    "PK",
+    "PP",
+    "RB",
+    "RM",
+    "RU",
+    "SC",
+    "SF",
+    "SM",
+    "TA",
+    "UR",
+    "V",
+    "Y"
+  ],
+  "domain": "seven_year_alpha39",
+  "direction_head": false,
+  "aliases": {
+    "HF": "HH"
+  },
+  "all_preregistered_seeds_included": true,
+  "selection": "validation_binary_macro_f1_earliest_strict_maximum",
+  "checkpoints": [
+    {
+      "family": "full",
+      "seed": 20261002,
+      "path": "models_performance/follow_binary/20261031_primary/training/full_20261002/best.pt",
+      "sha256": "69ad311fea906100ee7c1bae08eb13aa5ae7410b766baf7d5b1bc203602cf2ec",
+      "parameters": 11587,
+      "constructor": "tools.run_follow_binary_experiment.make_model",
+      "arguments": {
+        "family": "full",
+        "nodes": 39
+      }
+    },
+    {
+      "family": "full",
+      "seed": 20261003,
+      "path": "models_performance/follow_binary/20261031_primary/training/full_20261003/best.pt",
+      "sha256": "544439bb87c81ab2d0e50a0531a5bd8921e2c9c3734a013011b51415dc550717",
+      "parameters": 11587,
+      "constructor": "tools.run_follow_binary_experiment.make_model",
+      "arguments": {
+        "family": "full",
+        "nodes": 39
+      }
+    },
+    {
+      "family": "full",
+      "seed": 20261004,
+      "path": "models_performance/follow_binary/20261031_primary/training/full_20261004/best.pt",
+      "sha256": "d81c598594cd59475e906e46db0194fa916b74bb0e203246a18d1608c9502471",
+      "parameters": 11587,
+      "constructor": "tools.run_follow_binary_experiment.make_model",
+      "arguments": {
+        "family": "full",
+        "nodes": 39
+      }
+    },
+    {
+      "family": "HH",
+      "seed": 20261002,
+      "path": "models_performance/follow_binary/20261031_primary/training/HH_20261002/best.pt",
+      "sha256": "904324616bcef198c97009ad10aecf8a15a1be4dd6f1c68fe1754c26f16c3854",
+      "parameters": 11587,
+      "constructor": "tools.run_follow_binary_experiment.make_model",
+      "arguments": {
+        "family": "HH",
+        "nodes": 39
+      }
+    },
+    {
+      "family": "HH",
+      "seed": 20261003,
+      "path": "models_performance/follow_binary/20261031_primary/training/HH_20261003/best.pt",
+      "sha256": "ae6ad62da5229a417311219e4245d96ddb16b13dba23572b3193e06c1717ec24",
+      "parameters": 11587,
+      "constructor": "tools.run_follow_binary_experiment.make_model",
+      "arguments": {
+        "family": "HH",
+        "nodes": 39
+      }
+    },
+    {
+      "family": "HH",
+      "seed": 20261004,
+      "path": "models_performance/follow_binary/20261031_primary/training/HH_20261004/best.pt",
+      "sha256": "2e9cc8502ccbd7421d52a572358b93643a212427e5c1fe0a7e9471a7e5709fe4",
+      "parameters": 11587,
+      "constructor": "tools.run_follow_binary_experiment.make_model",
+      "arguments": {
+        "family": "HH",
+        "nodes": 39
+      }
+    },
+    {
+      "family": "gm",
+      "seed": 20261002,
+      "path": "models_performance/follow_binary/20261031_primary/training/gm_20261002/best.pt",
+      "sha256": "0395c5a8e404e0ffb9c87df1a902e7654ca917b540b87995026059ed05baf747",
+      "parameters": 217352,
+      "constructor": "tools.run_follow_binary_experiment.make_model",
+      "arguments": {
+        "family": "gm",
+        "nodes": 39
+      }
+    },
+    {
+      "family": "gm",
+      "seed": 20261003,
+      "path": "models_performance/follow_binary/20261031_primary/training/gm_20261003/best.pt",
+      "sha256": "544f10d1cc1fafb2c9cdae6dad3ddc0baf85cc3f5502f1ab77d26059ca6d037a",
+      "parameters": 217352,
+      "constructor": "tools.run_follow_binary_experiment.make_model",
+      "arguments": {
+        "family": "gm",
+        "nodes": 39
+      }
+    },
+    {
+      "family": "gm",
+      "seed": 20261004,
+      "path": "models_performance/follow_binary/20261031_primary/training/gm_20261004/best.pt",
+      "sha256": "72d0a3564a4f269138c9d8bc1f57f9b77f51f630f772e767c337bf9008e28a19",
+      "parameters": 217352,
+      "constructor": "tools.run_follow_binary_experiment.make_model",
+      "arguments": {
+        "family": "gm",
+        "nodes": 39
+      }
+    }
+  ],
+  "private_market_data_not_distributed": true
+}

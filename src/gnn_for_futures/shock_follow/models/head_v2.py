@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import math
 from typing import Sequence
 
 import torch
@@ -46,8 +47,12 @@ class HierarchicalLossOutcome:
     direction_pair_count: int
 
 
-def balanced_follow_class_weights(class_counts: Sequence[int]) -> tuple[float, float]:
-    """Return training-only balanced weights for no-follow versus follow."""
+def balanced_follow_class_weights(
+    class_counts: Sequence[int], *, negative_multiplier: float = 1.0,
+) -> tuple[float, float]:
+    """Return train-balanced weights, optionally penalizing no-follow errors more."""
+    if not math.isfinite(negative_multiplier) or negative_multiplier <= 0.0:
+        raise ValueError("negative_multiplier must be finite and strictly positive")
     if len(class_counts) != len(CLASS_ORDER):
         raise ValueError("class_counts must contain the three shock-follow classes")
     normalized: list[int] = []
@@ -60,7 +65,7 @@ def balanced_follow_class_weights(class_counts: Sequence[int]) -> tuple[float, f
     if no_follow == 0 or follow == 0:
         raise ValueError("balanced follow weights require both no-follow and follow cells")
     total = no_follow + follow
-    return total / (2.0 * no_follow), total / (2.0 * follow)
+    return negative_multiplier * (total / (2.0 * no_follow)), total / (2.0 * follow)
 
 
 def _validate_pair_logits(logits: Tensor, final_dim: int, name: str) -> None:
@@ -133,6 +138,7 @@ class HierarchicalShockFollowHead(nn.Module):
         pair_feature_dim: int = 0,
         *,
         hidden_dim: int = 100,
+        follow_only: bool = False,
     ) -> None:
         super().__init__()
         if min(source_dim, target_dim, pair_feature_dim, hidden_dim) < 0:
@@ -145,15 +151,16 @@ class HierarchicalShockFollowHead(nn.Module):
             nn.Linear(pair_feature_dim, hidden_dim) if pair_feature_dim else None
         )
         self.follow_output = nn.Linear(hidden_dim, len(FOLLOW_CLASS_ORDER))
-        self.direction_output = nn.Linear(hidden_dim, len(DIRECTION_CLASS_ORDER))
+        self.follow_only = follow_only
+        self.direction_output = None if follow_only else nn.Linear(hidden_dim, len(DIRECTION_CLASS_ORDER))
 
     def forward(
         self,
         source_representation: Tensor,
         target_representation: Tensor,
         pair_features: Tensor | None = None,
-    ) -> HierarchicalHeadOutput:
-        """Return two raw logit tensors and joint scores for every ordered pair."""
+    ) -> HierarchicalHeadOutput | Tensor:
+        """Return hierarchical outputs, or only Follow logits in the binary task."""
         if source_representation.ndim != 3 or target_representation.ndim != 3:
             raise ValueError(
                 "source and target representations must be [batch,nodes,features]"
@@ -173,11 +180,12 @@ class HierarchicalShockFollowHead(nn.Module):
             hidden = hidden + self.pair_projection(pair_features)
         hidden = torch.relu(hidden)
         follow_logits = self.follow_output(hidden)
-        direction_logits = self.direction_output(hidden)
         diagonal = torch.eye(nodes, dtype=torch.bool, device=hidden.device)
         diagonal = diagonal.unsqueeze(0).unsqueeze(-1)
         follow_logits = follow_logits.masked_fill(diagonal, 0.0)
-        direction_logits = direction_logits.masked_fill(diagonal, 0.0)
+        if self.follow_only:
+            return follow_logits
+        direction_logits = self.direction_output(hidden).masked_fill(diagonal, 0.0)
         return HierarchicalHeadOutput(
             follow_logits,
             direction_logits,

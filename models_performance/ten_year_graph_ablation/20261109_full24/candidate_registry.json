@@ -1,0 +1,164 @@
+{
+  "models": {
+    "full": {
+      "constructor": {
+        "node_feature_dim": 9,
+        "expected_num_futures": 27,
+        "follow_only": true,
+        "learnable_fusion": false,
+        "enabled_channels": [
+          true,
+          true,
+          true
+        ]
+      },
+      "effective_channels": [
+        true,
+        true,
+        true
+      ]
+    },
+    "no_economic": {
+      "constructor": {
+        "node_feature_dim": 9,
+        "expected_num_futures": 27,
+        "follow_only": true,
+        "learnable_fusion": false,
+        "enabled_channels": [
+          false,
+          true,
+          true
+        ]
+      },
+      "effective_channels": [
+        false,
+        true,
+        true
+      ]
+    },
+    "no_regression": {
+      "constructor": {
+        "node_feature_dim": 9,
+        "expected_num_futures": 27,
+        "follow_only": true,
+        "learnable_fusion": false,
+        "enabled_channels": [
+          true,
+          false,
+          true
+        ]
+      },
+      "effective_channels": [
+        true,
+        false,
+        true
+      ]
+    },
+    "no_attention": {
+      "constructor": {
+        "node_feature_dim": 9,
+        "expected_num_futures": 27,
+        "follow_only": true,
+        "learnable_fusion": false,
+        "enabled_channels": [
+          true,
+          true,
+          false
+        ]
+      },
+      "effective_channels": [
+        true,
+        true,
+        false
+      ]
+    },
+    "economic_only": {
+      "constructor": {
+        "node_feature_dim": 9,
+        "expected_num_futures": 27,
+        "follow_only": true,
+        "learnable_fusion": false,
+        "enabled_channels": [
+          true,
+          false,
+          false
+        ]
+      },
+      "effective_channels": [
+        true,
+        false,
+        false
+      ]
+    },
+    "regression_only": {
+      "constructor": {
+        "node_feature_dim": 9,
+        "expected_num_futures": 27,
+        "follow_only": true,
+        "learnable_fusion": false,
+        "enabled_channels": [
+          false,
+          true,
+          false
+        ]
+      },
+      "effective_channels": [
+        false,
+        true,
+        false
+      ]
+    },
+    "attention_only": {
+      "constructor": {
+        "node_feature_dim": 9,
+        "expected_num_futures": 27,
+        "follow_only": true,
+        "learnable_fusion": false,
+        "enabled_channels": [
+          false,
+          false,
+          true
+        ]
+      },
+      "effective_channels": [
+        false,
+        false,
+        true
+      ]
+    },
+    "none": {
+      "constructor": {
+        "node_feature_dim": 9,
+        "expected_num_futures": 27,
+        "follow_only": true,
+        "learnable_fusion": false,
+        "enabled_channels": [
+          true,
+          false,
+          false
+        ]
+      },
+      "effective_channels": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "seeds": [
+    20261002,
+    20261003,
+    20261004
+  ],
+  "negative_multiplier": 1.0,
+  "weights": [
+    0.5536762475967407,
+    5.157552242279053
+  ],
+  "aliases": {
+    "FF": "full",
+    "FH": "full"
+  },
+  "expected_trials": 24,
+  "complete_matrix": true
+}

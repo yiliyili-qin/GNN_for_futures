@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import torch
 from torch import Tensor, nn
 
 from gnn_for_futures.graph.temporal_attention import (
@@ -51,13 +52,17 @@ class ShockFollowGraphMixerV2(nn.Module):
         *,
         temporal_hidden_dim: int = 13,
         attention_history_length: int = 40,
-        expected_num_futures: int | None = 44,
+        expected_num_futures: int | None = 39,
         role_dim: int = 32,
         neighbor_capacity: int = 5,
         head_hidden_dim: int = 100,
         fusion_weights: tuple[float, float, float] = (0.2, 0.4, 0.4),
         topology_threshold: float = 0.1,
         attention_robust_quantile: float = 0.75,
+        learnable_fusion: bool = False,
+        enabled_channels: tuple[bool, bool, bool] = (True, True, True),
+        fixed_attention_scale: float | None = None,
+        follow_only: bool = False,
     ) -> None:
         super().__init__()
         if not 0.0 < attention_robust_quantile <= 1.0:
@@ -88,11 +93,35 @@ class ShockFollowGraphMixerV2(nn.Module):
             role_dim,
             pair_dim,
             hidden_dim=head_hidden_dim,
+            follow_only=follow_only,
         )
         self.neighbor_capacity = neighbor_capacity
         self.fusion_weights = fusion_weights
         self.topology_threshold = topology_threshold
         self.attention_robust_quantile = attention_robust_quantile
+        if len(enabled_channels) != 3 or not all(type(value) is bool for value in enabled_channels) or not any(enabled_channels):
+            raise ValueError("enabled_channels must contain three booleans with at least one enabled")
+        initial = torch.tensor(fusion_weights, dtype=torch.float32)
+        if initial.shape != (3,) or not torch.isfinite(initial).all() or initial.le(0).any():
+            raise ValueError("Initial fusion weights must contain three positive finite values")
+        if not torch.isclose(initial.sum(), torch.tensor(1.0)):
+            raise ValueError("Initial fusion weights must sum to one")
+        self.enabled_channels = enabled_channels
+        self.register_parameter("fusion_logits", nn.Parameter(initial.log()) if learnable_fusion else None)
+        if fixed_attention_scale is not None:
+            if not torch.isfinite(torch.tensor(fixed_attention_scale)) or fixed_attention_scale <= 0:
+                raise ValueError("fixed_attention_scale must be finite and positive")
+        self.register_buffer(
+            "fixed_attention_scale",
+            None if fixed_attention_scale is None else torch.tensor(fixed_attention_scale),
+        )
+
+    def normalized_fusion_weights(self) -> Tensor | tuple[float, float, float]:
+        if self.fusion_logits is None:
+            total = sum(weight for weight, enabled in zip(self.fusion_weights, self.enabled_channels) if enabled)
+            return tuple(weight / total if enabled else 0.0 for weight, enabled in zip(self.fusion_weights, self.enabled_channels))
+        enabled = torch.tensor(self.enabled_channels, device=self.fusion_logits.device)
+        return self.fusion_logits.masked_fill(~enabled, -torch.inf).softmax(0)
 
     def forward(
         self,
@@ -102,8 +131,8 @@ class ShockFollowGraphMixerV2(nn.Module):
         *,
         prior_available: Tensor,
         regression_available: Tensor,
-    ) -> ShockFollowModelV2Output:
-        """Return raw two-task logits and normalized joint class scores."""
+    ) -> ShockFollowModelV2Output | Tensor:
+        """Return auditable hierarchical outputs, or Follow-only logits."""
         if node_history.ndim != 4:
             raise ValueError(
                 "node_history must have shape [batch,nodes,sequence,node_features]"
@@ -113,10 +142,20 @@ class ShockFollowGraphMixerV2(nn.Module):
             temporal.attention_scores,
             temporal.peer_indices,
         )
+        if not self.enabled_channels[0]:
+            economic_prior = torch.zeros_like(economic_prior)
+            prior_available = torch.zeros_like(prior_available)
+        if not self.enabled_channels[1]:
+            regression_weight = torch.zeros_like(regression_weight)
+            regression_available = torch.zeros_like(regression_available)
+        if not self.enabled_channels[2]:
+            current_raw = torch.zeros_like(current_raw)
+            current_available = torch.zeros_like(current_available)
         attention = scale_attention_strength(
             current_raw,
             current_available,
             robust_quantile=self.attention_robust_quantile,
+            fixed_scale=None if self.fixed_attention_scale is None else float(self.fixed_attention_scale),
         )
         fused = fuse_graph_channels(
             economic_prior,
@@ -124,7 +163,7 @@ class ShockFollowGraphMixerV2(nn.Module):
             attention,
             prior_available=prior_available,
             regression_available=regression_available,
-            fusion_weights=self.fusion_weights,
+            fusion_weights=self.normalized_fusion_weights(),
             threshold=self.topology_threshold,
         )
         views = build_top_k_directed_views(
@@ -146,11 +185,13 @@ class ShockFollowGraphMixerV2(nn.Module):
             views.in_valid,
             transpose_pairs=True,
         )
-        head: HierarchicalHeadOutput = self.prediction_head(
+        head: HierarchicalHeadOutput | Tensor = self.prediction_head(
             source_representation,
             target_representation,
             fused.pair_features,
         )
+        if isinstance(head, Tensor):
+            return head
         return ShockFollowModelV2Output(
             follow_logits=head.follow_logits,
             direction_logits=head.direction_logits,

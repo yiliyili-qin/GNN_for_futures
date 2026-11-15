@@ -1,0 +1,18 @@
+{
+  "family": "HH",
+  "seed": 20261003,
+  "epochs": 12,
+  "best_epoch": 5,
+  "optimizer_steps": 6113,
+  "validation_macro_f1": 0.5778096377675132,
+  "test_macro_f1": 0.6300966974382466,
+  "checkpoint_sha256": "ae6ad62da5229a417311219e4245d96ddb16b13dba23572b3193e06c1717ec24",
+  "prediction_sha256": {
+    "validation": "291a9faaf26eb461e267278cb7813a51ec49bb49b6d63b2299abca8b63a891d6",
+    "test": "48919ab8e59553958da19112e45f6383334f94236e28c67e7aa20da0d3a4cf9c"
+  },
+  "seconds": 376.9567640442401,
+  "parameters": 11587,
+  "device": "cpu",
+  "peak_cuda_memory_bytes": null
+}

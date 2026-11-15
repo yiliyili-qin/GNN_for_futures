@@ -17,7 +17,7 @@ import pandas as pd
 DEFAULT_RESULTS_DIR = Path(
     "linear_regression_test/results/all_node_edge_regressions"
 )
-DEFAULT_GRAPH_PATH = Path("data/graph_data/futures_graph_smm_simplified.html")
+DEFAULT_GRAPH_PATH = Path("data/graph_data/futures_economic_prior_39.html")
 DEFAULT_REGRESSION_AVAILABILITY_PATH = Path(
     "data/contracts/regression_graph_availability.csv"
 )
@@ -322,6 +322,10 @@ def build_economic_prior_graph_from_bytes(
         graph_text = graph_bytes.decode("utf-8")
     except UnicodeDecodeError as error:
         raise ValueError("Economic graph HTML must be valid UTF-8") from error
+    nodes = re.search(r"const futuresNodes = `(.*?)`\.trim\(\);", graph_text, re.S)
+    if nodes is None or {line.split("|")[0] for line in nodes[1].strip().splitlines()} != set(names):
+        raise ValueError("Economic graph registered nodes differ from requested nodes")
+    expected_pairs = {39: 49, 44: 57}.get(len(names))
     match = EDGE_BLOCK.search(graph_text)
     if not match:
         raise ValueError("Could not find rawEdges in economic graph HTML")
@@ -331,8 +335,8 @@ def build_economic_prior_graph_from_bytes(
         if source == target:
             raise ValueError(f"Economic graph contains self-loop {source}")
         pairs.add(tuple(sorted((source, target))))
-    if len(pairs) != 57:
-        raise ValueError(f"Expected 57 unique economic pairs, found {len(pairs)}")
+    if len(pairs) != expected_pairs:
+        raise ValueError(f"Expected {expected_pairs} unique economic pairs, found {len(pairs)}")
 
     node_index = {name: position for position, name in enumerate(names)}
     unknown = sorted({name for pair in pairs for name in pair}.difference(node_index))
