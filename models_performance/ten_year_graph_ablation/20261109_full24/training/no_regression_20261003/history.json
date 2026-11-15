@@ -1,0 +1,4050 @@
+[
+  {
+    "epoch": 1,
+    "train": {
+      "macro_f1": 0.5159825324775136,
+      "per_class_f1": [
+        0.7804372775477592,
+        0.251527787407268
+      ],
+      "per_class_precision": [
+        0.9379849563146463,
+        0.1599463381452649
+      ],
+      "per_class_recall": [
+        0.668203212068142,
+        0.588473837882931
+      ],
+      "support": [
+        401984,
+        43154
+      ],
+      "confusion": [
+        [
+          268607,
+          133377
+        ],
+        [
+          17759,
+          25395
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.668203212068142,
+          0.33179678793185796
+        ],
+        [
+          0.4115261621170691,
+          0.588473837882931
+        ]
+      ],
+      "rows": 445138,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.1599463381452649,
+      "positive_recall": 0.588473837882931,
+      "positive_f1": 0.251527787407268,
+      "accuracy": 0.6604738305873684,
+      "balanced_accuracy": 0.6283385249755364,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.09694521698888883,
+      "predicted_follow_rate": 0.3566804002354326,
+      "follow_AP": {
+        "value": 0.20527782665064662,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.6866051815388959,
+        "reason": null
+      },
+      "log_loss": 0.6232973675221471,
+      "binary_Brier": 0.216714449050517,
+      "ECE": 0.03187647398917303,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 216177,
+          "accuracy": 0.5812227942843133,
+          "confidence": 0.5465016746520224
+        },
+        {
+          "bin": 6,
+          "rows": 113746,
+          "accuracy": 0.6845603361876461,
+          "confidence": 0.6469947395248641
+        },
+        {
+          "bin": 7,
+          "rows": 90464,
+          "accuracy": 0.7725725150336046,
+          "confidence": 0.748250889280718
+        },
+        {
+          "bin": 8,
+          "rows": 24695,
+          "accuracy": 0.8325571978133225,
+          "confidence": 0.8245185184325494
+        },
+        {
+          "bin": 9,
+          "rows": 56,
+          "accuracy": 0.6964285714285714,
+          "confidence": 0.9078446860824313
+        }
+      ]
+    },
+    "validation": {
+      "macro_f1": 0.5520321890498776,
+      "per_class_f1": [
+        0.9478791673188293,
+        0.15618521078092606
+      ],
+      "per_class_precision": [
+        0.9702866464693545,
+        0.11368209255533199
+      ],
+      "per_class_recall": [
+        0.9264832688937721,
+        0.24944812362030905
+      ],
+      "support": [
+        35951,
+        1359
+      ],
+      "confusion": [
+        [
+          33308,
+          2643
+        ],
+        [
+          1020,
+          339
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.9264832688937721,
+          0.07351673110622792
+        ],
+        [
+          0.7505518763796909,
+          0.24944812362030905
+        ]
+      ],
+      "rows": 37310,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.11368209255533199,
+      "positive_recall": 0.24944812362030905,
+      "positive_f1": 0.15618521078092606,
+      "accuracy": 0.9018225676762263,
+      "balanced_accuracy": 0.5879656962570405,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.0364245510586974,
+      "predicted_follow_rate": 0.0799249530956848,
+      "follow_AP": {
+        "value": 0.08828139041893951,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7176038643391834,
+        "reason": null
+      },
+      "log_loss": 0.3775307336032297,
+      "binary_Brier": 0.10758593484054435,
+      "ECE": 0.1771363185910861,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 6345,
+          "accuracy": 0.6649330181245074,
+          "confidence": 0.5514097381756004
+        },
+        {
+          "bin": 6,
+          "rows": 7691,
+          "accuracy": 0.8766090235340008,
+          "confidence": 0.6521958286624909
+        },
+        {
+          "bin": 7,
+          "rows": 11020,
+          "accuracy": 0.9614337568058077,
+          "confidence": 0.7526092222660185
+        },
+        {
+          "bin": 8,
+          "rows": 12254,
+          "accuracy": 0.9866982209890648,
+          "confidence": 0.8347933260182514
+        },
+        {
+          "bin": 9,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        }
+      ]
+    }
+  },
+  {
+    "epoch": 2,
+    "train": {
+      "macro_f1": 0.543091900334504,
+      "per_class_f1": [
+        0.7934676604785622,
+        0.2927161401904459
+      ],
+      "per_class_precision": [
+        0.9522606938832381,
+        0.18631768085133305
+      ],
+      "per_class_recall": [
+        0.6800643806718676,
+        0.6824164619733976
+      ],
+      "support": [
+        401984,
+        43154
+      ],
+      "confusion": [
+        [
+          273375,
+          128609
+        ],
+        [
+          13705,
+          29449
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.6800643806718676,
+          0.31993561932813247
+        ],
+        [
+          0.3175835380266024,
+          0.6824164619733976
+        ]
+      ],
+      "rows": 445138,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.18631768085133305,
+      "positive_recall": 0.6824164619733976,
+      "positive_f1": 0.2927161401904459,
+      "accuracy": 0.6802924037040199,
+      "balanced_accuracy": 0.6812404213226326,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.09694521698888883,
+      "predicted_follow_rate": 0.35507640327269296,
+      "follow_AP": {
+        "value": 0.24921326282500603,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7450332746838968,
+        "reason": null
+      },
+      "log_loss": 0.592849433690542,
+      "binary_Brier": 0.20371482545323938,
+      "ECE": 0.023369702821358706,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 114548,
+          "accuracy": 0.5430038062646227,
+          "confidence": 0.5500405531936102
+        },
+        {
+          "bin": 6,
+          "rows": 117203,
+          "accuracy": 0.6217758931085382,
+          "confidence": 0.6502752745839498
+        },
+        {
+          "bin": 7,
+          "rows": 127101,
+          "accuracy": 0.7280666556518045,
+          "confidence": 0.7514310381669559
+        },
+        {
+          "bin": 8,
+          "rows": 86011,
+          "accuracy": 0.8723419097557289,
+          "confidence": 0.8349249878279619
+        },
+        {
+          "bin": 9,
+          "rows": 275,
+          "accuracy": 0.6581818181818182,
+          "confidence": 0.9075680953535167
+        }
+      ]
+    },
+    "validation": {
+      "macro_f1": 0.5226224214782442,
+      "per_class_f1": [
+        0.8961566221580657,
+        0.14908822079842288
+      ],
+      "per_class_precision": [
+        0.9753215723496874,
+        0.08953677667603967
+      ],
+      "per_class_recall": [
+        0.8288781953214097,
+        0.4451802796173657
+      ],
+      "support": [
+        35951,
+        1359
+      ],
+      "confusion": [
+        [
+          29799,
+          6152
+        ],
+        [
+          754,
+          605
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.8288781953214097,
+          0.1711218046785903
+        ],
+        [
+          0.5548197203826343,
+          0.4451802796173657
+        ]
+      ],
+      "rows": 37310,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.08953677667603967,
+      "positive_recall": 0.4451802796173657,
+      "positive_f1": 0.14908822079842288,
+      "accuracy": 0.814902170999732,
+      "balanced_accuracy": 0.6370292374693878,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.0364245510586974,
+      "predicted_follow_rate": 0.18110426159206647,
+      "follow_AP": {
+        "value": 0.09445387713025677,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7264293016438919,
+        "reason": null
+      },
+      "log_loss": 0.455849021535383,
+      "binary_Brier": 0.14274301069495868,
+      "ECE": 0.11800809672221646,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 9216,
+          "accuracy": 0.5810546875,
+          "confidence": 0.549562827981491
+        },
+        {
+          "bin": 6,
+          "rows": 9340,
+          "accuracy": 0.7738758029978586,
+          "confidence": 0.6501202347606612
+        },
+        {
+          "bin": 7,
+          "rows": 9364,
+          "accuracy": 0.9181973515591627,
+          "confidence": 0.7509665846210395
+        },
+        {
+          "bin": 8,
+          "rows": 9389,
+          "accuracy": 0.9822132282458196,
+          "confidence": 0.8340901811521381
+        },
+        {
+          "bin": 9,
+          "rows": 1,
+          "accuracy": 1.0,
+          "confidence": 0.9000867232680321
+        }
+      ]
+    }
+  },
+  {
+    "epoch": 3,
+    "train": {
+      "macro_f1": 0.5388420929064502,
+      "per_class_f1": [
+        0.7865086429280285,
+        0.291175542884872
+      ],
+      "per_class_precision": [
+        0.9533975628682893,
+        0.18415060059783575
+      ],
+      "per_class_recall": [
+        0.6693425608979462,
+        0.6952310330444454
+      ],
+      "support": [
+        401984,
+        43154
+      ],
+      "confusion": [
+        [
+          269065,
+          132919
+        ],
+        [
+          13152,
+          30002
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.6693425608979462,
+          0.3306574391020538
+        ],
+        [
+          0.3047689669555545,
+          0.6952310330444454
+        ]
+      ],
+      "rows": 445138,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.18415060059783575,
+      "positive_recall": 0.6952310330444454,
+      "positive_f1": 0.291175542884872,
+      "accuracy": 0.6718523244476994,
+      "balanced_accuracy": 0.6822867969711959,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.09694521698888883,
+      "predicted_follow_rate": 0.366001105275218,
+      "follow_AP": {
+        "value": 0.2490650219571659,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7469736998806262,
+        "reason": null
+      },
+      "log_loss": 0.5926033457142414,
+      "binary_Brier": 0.20408625161499222,
+      "ECE": 0.03699392670616778,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 115434,
+          "accuracy": 0.523571911221997,
+          "confidence": 0.5499423682947326
+        },
+        {
+          "bin": 6,
+          "rows": 113661,
+          "accuracy": 0.5980503426857058,
+          "confidence": 0.6499381830093293
+        },
+        {
+          "bin": 7,
+          "rows": 118113,
+          "accuracy": 0.7187269817886262,
+          "confidence": 0.7514738905740749
+        },
+        {
+          "bin": 8,
+          "rows": 96410,
+          "accuracy": 0.8764443522456177,
+          "confidence": 0.8396929414529991
+        },
+        {
+          "bin": 9,
+          "rows": 1520,
+          "accuracy": 0.8322368421052632,
+          "confidence": 0.9076922588687586
+        }
+      ]
+    },
+    "validation": {
+      "macro_f1": 0.5599334246397547,
+      "per_class_f1": [
+        0.9458969343024003,
+        0.17396991497710923
+      ],
+      "per_class_precision": [
+        0.9718326389296402,
+        0.12360594795539033
+      ],
+      "per_class_recall": [
+        0.921309560234764,
+        0.293598233995585
+      ],
+      "support": [
+        35951,
+        1359
+      ],
+      "confusion": [
+        [
+          33122,
+          2829
+        ],
+        [
+          960,
+          399
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.921309560234764,
+          0.07869043976523601
+        ],
+        [
+          0.7064017660044151,
+          0.293598233995585
+        ]
+      ],
+      "rows": 37310,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.12360594795539033,
+      "positive_recall": 0.293598233995585,
+      "positive_f1": 0.17396991497710923,
+      "accuracy": 0.8984454569820424,
+      "balanced_accuracy": 0.6074538971151745,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.0364245510586974,
+      "predicted_follow_rate": 0.0865183596890914,
+      "follow_AP": {
+        "value": 0.09768416693144061,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7265030366223473,
+        "reason": null
+      },
+      "log_loss": 0.3952902807747092,
+      "binary_Brier": 0.1141358442207144,
+      "ECE": 0.18793292988488097,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 6798,
+          "accuracy": 0.666078258311268,
+          "confidence": 0.551398477639546
+        },
+        {
+          "bin": 6,
+          "rows": 8840,
+          "accuracy": 0.8903846153846153,
+          "confidence": 0.6522344787027771
+        },
+        {
+          "bin": 7,
+          "rows": 13146,
+          "accuracy": 0.9663776053552411,
+          "confidence": 0.7543113928792068
+        },
+        {
+          "bin": 8,
+          "rows": 8526,
+          "accuracy": 0.9873328641801549,
+          "confidence": 0.8302703697488687
+        },
+        {
+          "bin": 9,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        }
+      ]
+    }
+  },
+  {
+    "epoch": 4,
+    "train": {
+      "macro_f1": 0.5411071025839485,
+      "per_class_f1": [
+        0.7883664775630451,
+        0.29384772760485167
+      ],
+      "per_class_precision": [
+        0.9540921972282881,
+        0.18602901268071248
+      ],
+      "per_class_recall": [
+        0.6716934007323675,
+        0.6989386847105714
+      ],
+      "support": [
+        401984,
+        43154
+      ],
+      "confusion": [
+        [
+          270010,
+          131974
+        ],
+        [
+          12992,
+          30162
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.6716934007323675,
+          0.32830659926763256
+        ],
+        [
+          0.30106131528942853,
+          0.6989386847105714
+        ]
+      ],
+      "rows": 445138,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.18602901268071248,
+      "positive_recall": 0.6989386847105714,
+      "positive_f1": 0.29384772760485167,
+      "accuracy": 0.6743347006995584,
+      "balanced_accuracy": 0.6853160427214695,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.09694521698888883,
+      "predicted_follow_rate": 0.36423760721394266,
+      "follow_AP": {
+        "value": 0.25587973150187676,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7518930679477471,
+        "reason": null
+      },
+      "log_loss": 0.5883217893656079,
+      "binary_Brier": 0.20249382823365236,
+      "ECE": 0.03827681151175074,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 111149,
+          "accuracy": 0.5229376782517161,
+          "confidence": 0.5498080453858931
+        },
+        {
+          "bin": 6,
+          "rows": 112502,
+          "accuracy": 0.5911183801176868,
+          "confidence": 0.65017474333222
+        },
+        {
+          "bin": 7,
+          "rows": 123886,
+          "accuracy": 0.7211307169494535,
+          "confidence": 0.751279573649971
+        },
+        {
+          "bin": 8,
+          "rows": 93204,
+          "accuracy": 0.8800695249130939,
+          "confidence": 0.8425915942144728
+        },
+        {
+          "bin": 9,
+          "rows": 4397,
+          "accuracy": 0.9511030247896293,
+          "confidence": 0.9102170576017595
+        }
+      ]
+    },
+    "validation": {
+      "macro_f1": 0.5545941143595035,
+      "per_class_f1": [
+        0.940644383184011,
+        0.168543845534996
+      ],
+      "per_class_precision": [
+        0.9721043416327863,
+        0.11597010794353722
+      ],
+      "per_class_recall": [
+        0.9111568523824094,
+        0.3083149374540103
+      ],
+      "support": [
+        35951,
+        1359
+      ],
+      "confusion": [
+        [
+          32757,
+          3194
+        ],
+        [
+          940,
+          419
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.9111568523824094,
+          0.08884314761759061
+        ],
+        [
+          0.6916850625459897,
+          0.3083149374540103
+        ]
+      ],
+      "rows": 37310,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.11597010794353722,
+      "positive_recall": 0.3083149374540103,
+      "positive_f1": 0.168543845534996,
+      "accuracy": 0.889198606271777,
+      "balanced_accuracy": 0.6097358949182099,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.0364245510586974,
+      "predicted_follow_rate": 0.09683730903243098,
+      "follow_AP": {
+        "value": 0.09952418908281802,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7274339701477006,
+        "reason": null
+      },
+      "log_loss": 0.3919906943118235,
+      "binary_Brier": 0.11397623370064157,
+      "ECE": 0.17226498653816172,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 7101,
+          "accuracy": 0.6492043374172651,
+          "confidence": 0.5506075647301681
+        },
+        {
+          "bin": 6,
+          "rows": 8327,
+          "accuracy": 0.8717425243184821,
+          "confidence": 0.6515443263985007
+        },
+        {
+          "bin": 7,
+          "rows": 11213,
+          "accuracy": 0.9619192009274948,
+          "confidence": 0.7548393020435435
+        },
+        {
+          "bin": 8,
+          "rows": 10669,
+          "accuracy": 0.9861280344924548,
+          "confidence": 0.8388327242832218
+        },
+        {
+          "bin": 9,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        }
+      ]
+    }
+  },
+  {
+    "epoch": 5,
+    "train": {
+      "macro_f1": 0.5404263489445285,
+      "per_class_f1": [
+        0.7873762842834827,
+        0.2934764136055743
+      ],
+      "per_class_precision": [
+        0.9541911194381382,
+        0.18563679810308922
+      ],
+      "per_class_recall": [
+        0.6702082669957014,
+        0.7002827084395421
+      ],
+      "support": [
+        401984,
+        43154
+      ],
+      "confusion": [
+        [
+          269413,
+          132571
+        ],
+        [
+          12934,
+          30220
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.6702082669957014,
+          0.3297917330042987
+        ],
+        [
+          0.2997172915604579,
+          0.7002827084395421
+        ]
+      ],
+      "rows": 445138,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.18563679810308922,
+      "positive_recall": 0.7002827084395421,
+      "positive_f1": 0.2934764136055743,
+      "accuracy": 0.6731238402472941,
+      "balanced_accuracy": 0.6852454877176217,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.09694521698888883,
+      "predicted_follow_rate": 0.36570906101029343,
+      "follow_AP": {
+        "value": 0.2509232565267529,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7487416159995286,
+        "reason": null
+      },
+      "log_loss": 0.5918417737327293,
+      "binary_Brier": 0.20373215594791735,
+      "ECE": 0.03493980224575991,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 113090,
+          "accuracy": 0.5235034043682023,
+          "confidence": 0.5502197961695937
+        },
+        {
+          "bin": 6,
+          "rows": 115438,
+          "accuracy": 0.5992654065385749,
+          "confidence": 0.650139274611615
+        },
+        {
+          "bin": 7,
+          "rows": 120418,
+          "accuracy": 0.7221511734126127,
+          "confidence": 0.750193046592241
+        },
+        {
+          "bin": 8,
+          "rows": 93534,
+          "accuracy": 0.8760557658177774,
+          "confidence": 0.8416994491825324
+        },
+        {
+          "bin": 9,
+          "rows": 2658,
+          "accuracy": 0.8844996237772762,
+          "confidence": 0.9103345959114458
+        }
+      ]
+    },
+    "validation": {
+      "macro_f1": 0.5385492204474293,
+      "per_class_f1": [
+        0.9161077288205551,
+        0.1609907120743034
+      ],
+      "per_class_precision": [
+        0.9745029166405319,
+        0.1006637168141593
+      ],
+      "per_class_recall": [
+        0.8643153180718199,
+        0.40176600441501104
+      ],
+      "support": [
+        35951,
+        1359
+      ],
+      "confusion": [
+        [
+          31073,
+          4878
+        ],
+        [
+          813,
+          546
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.8643153180718199,
+          0.13568468192818003
+        ],
+        [
+          0.5982339955849889,
+          0.40176600441501104
+        ]
+      ],
+      "rows": 37310,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.1006637168141593,
+      "positive_recall": 0.40176600441501104,
+      "positive_f1": 0.1609907120743034,
+      "accuracy": 0.8474671669793621,
+      "balanced_accuracy": 0.6330406612434155,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.0364245510586974,
+      "predicted_follow_rate": 0.14537657464486733,
+      "follow_AP": {
+        "value": 0.10236084488787994,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.73480313906945,
+        "reason": null
+      },
+      "log_loss": 0.43675163440707326,
+      "binary_Brier": 0.13300013590352863,
+      "ECE": 0.15575537209922494,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 9483,
+          "accuracy": 0.6074027206580196,
+          "confidence": 0.5493504762976378
+        },
+        {
+          "bin": 6,
+          "rows": 8878,
+          "accuracy": 0.8334084253210182,
+          "confidence": 0.6506481846359351
+        },
+        {
+          "bin": 7,
+          "rows": 11383,
+          "accuracy": 0.9637178248264957,
+          "confidence": 0.7524245735550769
+        },
+        {
+          "bin": 8,
+          "rows": 7566,
+          "accuracy": 0.9899550621200106,
+          "confidence": 0.8269855929516451
+        },
+        {
+          "bin": 9,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        }
+      ]
+    }
+  },
+  {
+    "epoch": 6,
+    "train": {
+      "macro_f1": 0.5396274780429888,
+      "per_class_f1": [
+        0.7851285319736563,
+        0.29412642411232137
+      ],
+      "per_class_precision": [
+        0.9550851777521914,
+        0.18561786558287316
+      ],
+      "per_class_recall": [
+        0.6665215530966406,
+        0.70802243129258
+      ],
+      "support": [
+        401984,
+        43154
+      ],
+      "confusion": [
+        [
+          267931,
+          134053
+        ],
+        [
+          12600,
+          30554
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.6665215530966406,
+          0.3334784469033593
+        ],
+        [
+          0.2919775687074199,
+          0.70802243129258
+        ]
+      ],
+      "rows": 445138,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.18561786558287316,
+      "positive_recall": 0.70802243129258,
+      "positive_f1": 0.29412642411232137,
+      "accuracy": 0.6705448647385754,
+      "balanced_accuracy": 0.6872719921946103,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.09694521698888883,
+      "predicted_follow_rate": 0.36978869474185533,
+      "follow_AP": {
+        "value": 0.2589492914104513,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7533089303158204,
+        "reason": null
+      },
+      "log_loss": 0.5888529417566334,
+      "binary_Brier": 0.20297846410205886,
+      "ECE": 0.04345108921208414,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 111933,
+          "accuracy": 0.5163356650853635,
+          "confidence": 0.5502062427117149
+        },
+        {
+          "bin": 6,
+          "rows": 115998,
+          "accuracy": 0.5884066966671839,
+          "confidence": 0.6505447650791154
+        },
+        {
+          "bin": 7,
+          "rows": 114089,
+          "accuracy": 0.7102963475882863,
+          "confidence": 0.7497304808225808
+        },
+        {
+          "bin": 8,
+          "rows": 95915,
+          "accuracy": 0.8821039462023667,
+          "confidence": 0.8440175859275348
+        },
+        {
+          "bin": 9,
+          "rows": 7203,
+          "accuracy": 0.9429404414827155,
+          "confidence": 0.9164862068217157
+        }
+      ]
+    },
+    "validation": {
+      "macro_f1": 0.5370374388729916,
+      "per_class_f1": [
+        0.9128672445930353,
+        0.16120763315294787
+      ],
+      "per_class_precision": [
+        0.9749423326065662,
+        0.09994702454529401
+      ],
+      "per_class_recall": [
+        0.8582236933604073,
+        0.41648270787343633
+      ],
+      "support": [
+        35951,
+        1359
+      ],
+      "confusion": [
+        [
+          30854,
+          5097
+        ],
+        [
+          793,
+          566
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.8582236933604073,
+          0.1417763066395928
+        ],
+        [
+          0.5835172921265637,
+          0.41648270787343633
+        ]
+      ],
+      "rows": 37310,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.09994702454529401,
+      "positive_recall": 0.41648270787343633,
+      "positive_f1": 0.16120763315294787,
+      "accuracy": 0.8421334762798177,
+      "balanced_accuracy": 0.6373532006169218,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.0364245510586974,
+      "predicted_follow_rate": 0.15178236397748593,
+      "follow_AP": {
+        "value": 0.10084852375066398,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7310758538177905,
+        "reason": null
+      },
+      "log_loss": 0.4700144431510763,
+      "binary_Brier": 0.14609219186293684,
+      "ECE": 0.17411256766541341,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 10785,
+          "accuracy": 0.6363467779323134,
+          "confidence": 0.5499378085689076
+        },
+        {
+          "bin": 6,
+          "rows": 10930,
+          "accuracy": 0.8634034766697164,
+          "confidence": 0.650896911984284
+        },
+        {
+          "bin": 7,
+          "rows": 13034,
+          "accuracy": 0.9678533067362284,
+          "confidence": 0.7509368509511485
+        },
+        {
+          "bin": 8,
+          "rows": 2561,
+          "accuracy": 0.9781335415853183,
+          "confidence": 0.8163868300282178
+        },
+        {
+          "bin": 9,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        }
+      ]
+    }
+  },
+  {
+    "epoch": 7,
+    "train": {
+      "macro_f1": 0.5420406737842317,
+      "per_class_f1": [
+        0.7885552558521273,
+        0.2955260917163362
+      ],
+      "per_class_precision": [
+        0.9547860959730096,
+        0.1870346305682665
+      ],
+      "per_class_recall": [
+        0.671623746218755,
+        0.7037354590536219
+      ],
+      "support": [
+        401984,
+        43154
+      ],
+      "confusion": [
+        [
+          269982,
+          132002
+        ],
+        [
+          12785,
+          30369
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.671623746218755,
+          0.328376253781245
+        ],
+        [
+          0.2962645409463781,
+          0.7037354590536219
+        ]
+      ],
+      "rows": 445138,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.1870346305682665,
+      "positive_recall": 0.7037354590536219,
+      "positive_f1": 0.2955260917163362,
+      "accuracy": 0.674736823187416,
+      "balanced_accuracy": 0.6876796026361884,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.09694521698888883,
+      "predicted_follow_rate": 0.3647655333851525,
+      "follow_AP": {
+        "value": 0.2624230788108514,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7547279856167016,
+        "reason": null
+      },
+      "log_loss": 0.5857813414309274,
+      "binary_Brier": 0.2016287460162471,
+      "ECE": 0.04004470797599253,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 117373,
+          "accuracy": 0.5284094297666414,
+          "confidence": 0.5500505786565358
+        },
+        {
+          "bin": 6,
+          "rows": 117109,
+          "accuracy": 0.5985705624674449,
+          "confidence": 0.6495878663022862
+        },
+        {
+          "bin": 7,
+          "rows": 104999,
+          "accuracy": 0.7050257621501157,
+          "confidence": 0.7500892665780128
+        },
+        {
+          "bin": 8,
+          "rows": 99358,
+          "accuracy": 0.8881217415809497,
+          "confidence": 0.8442278630667375
+        },
+        {
+          "bin": 9,
+          "rows": 6299,
+          "accuracy": 0.9466581997142404,
+          "confidence": 0.9120624967884603
+        }
+      ]
+    },
+    "validation": {
+      "macro_f1": 0.562273045687457,
+      "per_class_f1": [
+        0.9610961516885448,
+        0.16344993968636912
+      ],
+      "per_class_precision": [
+        0.9692246768308206,
+        0.13847726111394992
+      ],
+      "per_class_recall": [
+        0.9531028344135073,
+        0.199411331861663
+      ],
+      "support": [
+        35951,
+        1359
+      ],
+      "confusion": [
+        [
+          34265,
+          1686
+        ],
+        [
+          1088,
+          271
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.9531028344135073,
+          0.04689716558649273
+        ],
+        [
+          0.8005886681383371,
+          0.199411331861663
+        ]
+      ],
+      "rows": 37310,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.13847726111394992,
+      "positive_recall": 0.199411331861663,
+      "positive_f1": 0.16344993968636912,
+      "accuracy": 0.9256499597963013,
+      "balanced_accuracy": 0.5762570831375852,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.0364245510586974,
+      "predicted_follow_rate": 0.05245242562315733,
+      "follow_AP": {
+        "value": 0.09830251982276302,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7217839980012039,
+        "reason": null
+      },
+      "log_loss": 0.29996964176311464,
+      "binary_Brier": 0.07905448401616817,
+      "ECE": 0.14042821177312642,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 3718,
+          "accuracy": 0.6465841850457235,
+          "confidence": 0.5508252935040183
+        },
+        {
+          "bin": 6,
+          "rows": 4442,
+          "accuracy": 0.8478162989644304,
+          "confidence": 0.6527763387470941
+        },
+        {
+          "bin": 7,
+          "rows": 7062,
+          "accuracy": 0.9495893514585103,
+          "confidence": 0.7576132774315046
+        },
+        {
+          "bin": 8,
+          "rows": 19755,
+          "accuracy": 0.9791445203745888,
+          "confidence": 0.854286810549052
+        },
+        {
+          "bin": 9,
+          "rows": 2333,
+          "accuracy": 0.9931418774110587,
+          "confidence": 0.9096963451197231
+        }
+      ]
+    }
+  },
+  {
+    "epoch": 8,
+    "train": {
+      "macro_f1": 0.5410769050569488,
+      "per_class_f1": [
+        0.7879906811658767,
+        0.29416312894802105
+      ],
+      "per_class_precision": [
+        0.9543323745537783,
+        0.1861441222990147
+      ],
+      "per_class_recall": [
+        0.6710291951918484,
+        0.7008852018352876
+      ],
+      "support": [
+        401984,
+        43154
+      ],
+      "confusion": [
+        [
+          269743,
+          132241
+        ],
+        [
+          12908,
+          30246
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.6710291951918484,
+          0.32897080480815155
+        ],
+        [
+          0.2991147981647124,
+          0.7008852018352876
+        ]
+      ],
+      "rows": 445138,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.1861441222990147,
+      "positive_recall": 0.7008852018352876,
+      "positive_f1": 0.29416312894802105,
+      "accuracy": 0.6739235922343183,
+      "balanced_accuracy": 0.685957198513568,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.09694521698888883,
+      "predicted_follow_rate": 0.365026126729239,
+      "follow_AP": {
+        "value": 0.2559548213532929,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.752671086351678,
+        "reason": null
+      },
+      "log_loss": 0.5890120664964823,
+      "binary_Brier": 0.20294691480684285,
+      "ECE": 0.03557835626156326,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 120095,
+          "accuracy": 0.534460218993297,
+          "confidence": 0.550059545034423
+        },
+        {
+          "bin": 6,
+          "rows": 115118,
+          "accuracy": 0.5999496169148179,
+          "confidence": 0.6483792149230897
+        },
+        {
+          "bin": 7,
+          "rows": 105242,
+          "accuracy": 0.7047756599076415,
+          "confidence": 0.7512790572168445
+        },
+        {
+          "bin": 8,
+          "rows": 95330,
+          "accuracy": 0.8787894681632225,
+          "confidence": 0.8445275076337023
+        },
+        {
+          "bin": 9,
+          "rows": 9353,
+          "accuracy": 0.939912327595424,
+          "confidence": 0.9154864120346224
+        }
+      ]
+    },
+    "validation": {
+      "macro_f1": 0.5459032837089596,
+      "per_class_f1": [
+        0.9298225230197229,
+        0.16198404439819633
+      ],
+      "per_class_precision": [
+        0.9728900100294806,
+        0.10596777853415021
+      ],
+      "per_class_recall": [
+        0.8904063864704737,
+        0.34363502575423105
+      ],
+      "support": [
+        35951,
+        1359
+      ],
+      "confusion": [
+        [
+          32011,
+          3940
+        ],
+        [
+          892,
+          467
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.8904063864704737,
+          0.1095936135295263
+        ],
+        [
+          0.6563649742457689,
+          0.34363502575423105
+        ]
+      ],
+      "rows": 37310,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.10596777853415021,
+      "positive_recall": 0.34363502575423105,
+      "positive_f1": 0.16198404439819633,
+      "accuracy": 0.8704904851246315,
+      "balanced_accuracy": 0.6170207061123524,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.0364245510586974,
+      "predicted_follow_rate": 0.11811846689895471,
+      "follow_AP": {
+        "value": 0.09983225455815391,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7323931872850646,
+        "reason": null
+      },
+      "log_loss": 0.3676996063929758,
+      "binary_Brier": 0.10708984747222446,
+      "ECE": 0.12400943459326381,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 6461,
+          "accuracy": 0.5853583036681628,
+          "confidence": 0.5493977004309
+        },
+        {
+          "bin": 6,
+          "rows": 6203,
+          "accuracy": 0.777688215379655,
+          "confidence": 0.6493852530854874
+        },
+        {
+          "bin": 7,
+          "rows": 7792,
+          "accuracy": 0.9369866529774127,
+          "confidence": 0.7568047799521893
+        },
+        {
+          "bin": 8,
+          "rows": 16000,
+          "accuracy": 0.9825,
+          "confidence": 0.8501303682308644
+        },
+        {
+          "bin": 9,
+          "rows": 854,
+          "accuracy": 0.9964871194379391,
+          "confidence": 0.9066791462186349
+        }
+      ]
+    }
+  },
+  {
+    "epoch": 9,
+    "train": {
+      "macro_f1": 0.5412991308479314,
+      "per_class_f1": [
+        0.787090696864825,
+        0.2955075648310376
+      ],
+      "per_class_precision": [
+        0.955175768075604,
+        0.18676128716505566
+      ],
+      "per_class_recall": [
+        0.6693102213023404,
+        0.7074199378968345
+      ],
+      "support": [
+        401984,
+        43154
+      ],
+      "confusion": [
+        [
+          269052,
+          132932
+        ],
+        [
+          12626,
+          30528
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.6693102213023404,
+          0.3306897786976596
+        ],
+        [
+          0.2925800621031654,
+          0.7074199378968345
+        ]
+      ],
+      "rows": 445138,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.18676128716505566,
+      "positive_recall": 0.7074199378968345,
+      "positive_f1": 0.2955075648310376,
+      "accuracy": 0.6730047760469787,
+      "balanced_accuracy": 0.6883650795995875,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.09694521698888883,
+      "predicted_follow_rate": 0.36721196572748227,
+      "follow_AP": {
+        "value": 0.25978579981390515,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7552214425058098,
+        "reason": null
+      },
+      "log_loss": 0.5870698253268226,
+      "binary_Brier": 0.20219896548442162,
+      "ECE": 0.041107087469308426,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 115013,
+          "accuracy": 0.5248102388425656,
+          "confidence": 0.5502311072736842
+        },
+        {
+          "bin": 6,
+          "rows": 116914,
+          "accuracy": 0.5918025215115384,
+          "confidence": 0.6500760428990463
+        },
+        {
+          "bin": 7,
+          "rows": 106850,
+          "accuracy": 0.707477772578381,
+          "confidence": 0.7502430787725766
+        },
+        {
+          "bin": 8,
+          "rows": 98019,
+          "accuracy": 0.8839408686071067,
+          "confidence": 0.8450835970015373
+        },
+        {
+          "bin": 9,
+          "rows": 8342,
+          "accuracy": 0.9341884440182211,
+          "confidence": 0.9122054652134289
+        }
+      ]
+    },
+    "validation": {
+      "macro_f1": 0.5626730252805264,
+      "per_class_f1": [
+        0.9542394931840036,
+        0.1711065573770492
+      ],
+      "per_class_precision": [
+        0.9705163238889688,
+        0.131237721021611
+      ],
+      "per_class_recall": [
+        0.9384996244888877,
+        0.2457689477557027
+      ],
+      "support": [
+        35951,
+        1359
+      ],
+      "confusion": [
+        [
+          33740,
+          2211
+        ],
+        [
+          1025,
+          334
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.9384996244888877,
+          0.06150037551111235
+        ],
+        [
+          0.7542310522442973,
+          0.2457689477557027
+        ]
+      ],
+      "rows": 37310,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.131237721021611,
+      "positive_recall": 0.2457689477557027,
+      "positive_f1": 0.1711065573770492,
+      "accuracy": 0.9132672205842938,
+      "balanced_accuracy": 0.5921342861222952,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.0364245510586974,
+      "predicted_follow_rate": 0.0682122755293487,
+      "follow_AP": {
+        "value": 0.10075335669042312,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7323728628343757,
+        "reason": null
+      },
+      "log_loss": 0.34108219729672185,
+      "binary_Brier": 0.094453819171445,
+      "ECE": 0.16178017516708573,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 5359,
+          "accuracy": 0.6626236238104124,
+          "confidence": 0.5505311592431806
+        },
+        {
+          "bin": 6,
+          "rows": 6449,
+          "accuracy": 0.8753295084509226,
+          "confidence": 0.6508393146387642
+        },
+        {
+          "bin": 7,
+          "rows": 8922,
+          "accuracy": 0.9568482403048644,
+          "confidence": 0.755530281650849
+        },
+        {
+          "bin": 8,
+          "rows": 15519,
+          "accuracy": 0.984857271731426,
+          "confidence": 0.8496842865435892
+        },
+        {
+          "bin": 9,
+          "rows": 1061,
+          "accuracy": 0.9962299717247879,
+          "confidence": 0.9079461133530632
+        }
+      ]
+    }
+  },
+  {
+    "epoch": 10,
+    "train": {
+      "macro_f1": 0.5419080403575223,
+      "per_class_f1": [
+        0.7881451523351432,
+        0.2956709283799013
+      ],
+      "per_class_precision": [
+        0.9549619726089481,
+        0.1870444348841497
+      ],
+      "per_class_recall": [
+        0.6709421270498328,
+        0.7052416925429856
+      ],
+      "support": [
+        401984,
+        43154
+      ],
+      "confusion": [
+        [
+          269708,
+          132276
+        ],
+        [
+          12720,
+          30434
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.6709421270498328,
+          0.3290578729501672
+        ],
+        [
+          0.2947583074570144,
+          0.7052416925429856
+        ]
+      ],
+      "rows": 445138,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.1870444348841497,
+      "positive_recall": 0.7052416925429856,
+      "positive_f1": 0.2956709283799013,
+      "accuracy": 0.6742673058691911,
+      "balanced_accuracy": 0.6880919097964092,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.09694521698888883,
+      "predicted_follow_rate": 0.365527094968302,
+      "follow_AP": {
+        "value": 0.2628349324057561,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7557015210822569,
+        "reason": null
+      },
+      "log_loss": 0.5888091221009432,
+      "binary_Brier": 0.20273020587461477,
+      "ECE": 0.03285050551710412,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 119159,
+          "accuracy": 0.5313488699972306,
+          "confidence": 0.5501563183645102
+        },
+        {
+          "bin": 6,
+          "rows": 117471,
+          "accuracy": 0.6033403989069642,
+          "confidence": 0.6495533095571135
+        },
+        {
+          "bin": 7,
+          "rows": 104396,
+          "accuracy": 0.7110521475918617,
+          "confidence": 0.7497637405293
+        },
+        {
+          "bin": 8,
+          "rows": 93939,
+          "accuracy": 0.8762814166640054,
+          "confidence": 0.846493216839419
+        },
+        {
+          "bin": 9,
+          "rows": 10173,
+          "accuracy": 0.9244077459942986,
+          "confidence": 0.9132364495946403
+        }
+      ]
+    },
+    "validation": {
+      "macro_f1": 0.5290774477504004,
+      "per_class_f1": [
+        0.8982044925249794,
+        0.15995040297582144
+      ],
+      "per_class_precision": [
+        0.9766697163769442,
+        0.09618252311362958
+      ],
+      "per_class_recall": [
+        0.8314094183750105,
+        0.4746136865342163
+      ],
+      "support": [
+        35951,
+        1359
+      ],
+      "confusion": [
+        [
+          29890,
+          6061
+        ],
+        [
+          714,
+          645
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.8314094183750105,
+          0.16859058162498958
+        ],
+        [
+          0.5253863134657837,
+          0.4746136865342163
+        ]
+      ],
+      "rows": 37310,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.09618252311362958,
+      "positive_recall": 0.4746136865342163,
+      "positive_f1": 0.15995040297582144,
+      "accuracy": 0.8184132940230501,
+      "balanced_accuracy": 0.6530115524546134,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.0364245510586974,
+      "predicted_follow_rate": 0.17973733583489682,
+      "follow_AP": {
+        "value": 0.10075257442949442,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7341167846211412,
+        "reason": null
+      },
+      "log_loss": 0.46195793128705276,
+      "binary_Brier": 0.14540201920669113,
+      "ECE": 0.1295361337338079,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 10678,
+          "accuracy": 0.6185615283761003,
+          "confidence": 0.5497870806295521
+        },
+        {
+          "bin": 6,
+          "rows": 8978,
+          "accuracy": 0.7898195589218089,
+          "confidence": 0.6479318293338896
+        },
+        {
+          "bin": 7,
+          "rows": 9467,
+          "accuracy": 0.9315517059258477,
+          "confidence": 0.7516828052336756
+        },
+        {
+          "bin": 8,
+          "rows": 8044,
+          "accuracy": 0.9804823470909995,
+          "confidence": 0.8414422462327097
+        },
+        {
+          "bin": 9,
+          "rows": 143,
+          "accuracy": 0.9300699300699301,
+          "confidence": 0.9056356211642286
+        }
+      ]
+    }
+  },
+  {
+    "epoch": 11,
+    "train": {
+      "macro_f1": 0.5423716318933228,
+      "per_class_f1": [
+        0.7897042524645628,
+        0.29503901132208293
+      ],
+      "per_class_precision": [
+        0.9542602983054671,
+        0.1869617476859023
+      ],
+      "per_class_recall": [
+        0.6735541713103009,
+        0.6992631042313575
+      ],
+      "support": [
+        401984,
+        43154
+      ],
+      "confusion": [
+        [
+          270758,
+          131226
+        ],
+        [
+          12978,
+          30176
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.6735541713103009,
+          0.32644582868969907
+        ],
+        [
+          0.30073689576864254,
+          0.6992631042313575
+        ]
+      ],
+      "rows": 445138,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.1869617476859023,
+      "positive_recall": 0.6992631042313575,
+      "positive_f1": 0.29503901132208293,
+      "accuracy": 0.6760465293908855,
+      "balanced_accuracy": 0.6864086377708292,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.09694521698888883,
+      "predicted_follow_rate": 0.36258868036429154,
+      "follow_AP": {
+        "value": 0.2568103999793217,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7528674480732584,
+        "reason": null
+      },
+      "log_loss": 0.5872796602199899,
+      "binary_Brier": 0.20217156028590086,
+      "ECE": 0.03268162601155673,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 121196,
+          "accuracy": 0.538103567774514,
+          "confidence": 0.55029894953507
+        },
+        {
+          "bin": 6,
+          "rows": 114247,
+          "accuracy": 0.5994555655728377,
+          "confidence": 0.6484048476321184
+        },
+        {
+          "bin": 7,
+          "rows": 104000,
+          "accuracy": 0.709375,
+          "confidence": 0.7503562253353974
+        },
+        {
+          "bin": 8,
+          "rows": 94175,
+          "accuracy": 0.8793628882399788,
+          "confidence": 0.8463438180551816
+        },
+        {
+          "bin": 9,
+          "rows": 11520,
+          "accuracy": 0.9238715277777778,
+          "confidence": 0.9146809761528857
+        }
+      ]
+    },
+    "validation": {
+      "macro_f1": 0.5473054040521309,
+      "per_class_f1": [
+        0.9302940108892922,
+        0.16431679721496953
+      ],
+      "per_class_precision": [
+        0.9730591665654234,
+        0.10761513907888737
+      ],
+      "per_class_recall": [
+        0.8911295930572167,
+        0.34731420161883736
+      ],
+      "support": [
+        35951,
+        1359
+      ],
+      "confusion": [
+        [
+          32037,
+          3914
+        ],
+        [
+          887,
+          472
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.8911295930572167,
+          0.10887040694278323
+        ],
+        [
+          0.6526857983811626,
+          0.34731420161883736
+        ]
+      ],
+      "rows": 37310,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.10761513907888737,
+      "positive_recall": 0.34731420161883736,
+      "positive_f1": 0.16431679721496953,
+      "accuracy": 0.871321361565264,
+      "balanced_accuracy": 0.619221897338027,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.0364245510586974,
+      "predicted_follow_rate": 0.11755561511659073,
+      "follow_AP": {
+        "value": 0.10223846066484037,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7355770237427041,
+        "reason": null
+      },
+      "log_loss": 0.3959753258686294,
+      "binary_Brier": 0.1172194919860896,
+      "ECE": 0.1513844543297659,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 7623,
+          "accuracy": 0.6103896103896104,
+          "confidence": 0.5502132109600807
+        },
+        {
+          "bin": 6,
+          "rows": 8349,
+          "accuracy": 0.8556713378847767,
+          "confidence": 0.6502249370807516
+        },
+        {
+          "bin": 7,
+          "rows": 9253,
+          "accuracy": 0.9492056630282071,
+          "confidence": 0.7523337063529254
+        },
+        {
+          "bin": 8,
+          "rows": 11436,
+          "accuracy": 0.9866211962224554,
+          "confidence": 0.84709425367957
+        },
+        {
+          "bin": 9,
+          "rows": 649,
+          "accuracy": 0.9953775038520801,
+          "confidence": 0.9077488939250562
+        }
+      ]
+    }
+  },
+  {
+    "epoch": 12,
+    "train": {
+      "macro_f1": 0.5432478207972955,
+      "per_class_f1": [
+        0.7894553230621018,
+        0.29704031853248924
+      ],
+      "per_class_precision": [
+        0.955213863603449,
+        0.1880743287027037
+      ],
+      "per_class_recall": [
+        0.6727183171469511,
+        0.7061917782824304
+      ],
+      "support": [
+        401984,
+        43154
+      ],
+      "confusion": [
+        [
+          270422,
+          131562
+        ],
+        [
+          12679,
+          30475
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.6727183171469511,
+          0.32728168285304887
+        ],
+        [
+          0.29380822171756965,
+          0.7061917782824304
+        ]
+      ],
+      "rows": 445138,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.1880743287027037,
+      "positive_recall": 0.7061917782824304,
+      "positive_f1": 0.29704031853248924,
+      "accuracy": 0.6759634091000993,
+      "balanced_accuracy": 0.6894550477146908,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.09694521698888883,
+      "predicted_follow_rate": 0.36401520427373085,
+      "follow_AP": {
+        "value": 0.2638437025453614,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7560538760053052,
+        "reason": null
+      },
+      "log_loss": 0.5861891770631921,
+      "binary_Brier": 0.20168845509888172,
+      "ECE": 0.032590279733624015,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 118739,
+          "accuracy": 0.529573265734089,
+          "confidence": 0.5502967834296963
+        },
+        {
+          "bin": 6,
+          "rows": 116461,
+          "accuracy": 0.6058422991387675,
+          "confidence": 0.6486804000759814
+        },
+        {
+          "bin": 7,
+          "rows": 103984,
+          "accuracy": 0.7106477919679951,
+          "confidence": 0.7502570905572067
+        },
+        {
+          "bin": 8,
+          "rows": 93067,
+          "accuracy": 0.8769810996378953,
+          "confidence": 0.8469327727410225
+        },
+        {
+          "bin": 9,
+          "rows": 12887,
+          "accuracy": 0.9269030806238845,
+          "confidence": 0.9158630282186302
+        }
+      ]
+    },
+    "validation": {
+      "macro_f1": 0.5401674476228832,
+      "per_class_f1": [
+        0.9165991186830353,
+        0.1637357765627309
+      ],
+      "per_class_precision": [
+        0.9747664723214845,
+        0.10244082840236686
+      ],
+      "per_class_recall": [
+        0.8649828933826598,
+        0.40765268579838115
+      ],
+      "support": [
+        35951,
+        1359
+      ],
+      "confusion": [
+        [
+          31097,
+          4854
+        ],
+        [
+          805,
+          554
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.8649828933826598,
+          0.13501710661734026
+        ],
+        [
+          0.5923473142016188,
+          0.40765268579838115
+        ]
+      ],
+      "rows": 37310,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.10244082840236686,
+      "positive_recall": 0.40765268579838115,
+      "positive_f1": 0.1637357765627309,
+      "accuracy": 0.8483248458858215,
+      "balanced_accuracy": 0.6363177895905204,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.0364245510586974,
+      "predicted_follow_rate": 0.14494773519163764,
+      "follow_AP": {
+        "value": 0.09961207390637275,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7320250752552186,
+        "reason": null
+      },
+      "log_loss": 0.4976619039647827,
+      "binary_Brier": 0.15699042945757116,
+      "ECE": 0.2048447386081338,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 12149,
+          "accuracy": 0.6744588031936785,
+          "confidence": 0.5498499337837366
+        },
+        {
+          "bin": 6,
+          "rows": 14744,
+          "accuracy": 0.9097259902333152,
+          "confidence": 0.6528549856722063
+        },
+        {
+          "bin": 7,
+          "rows": 10162,
+          "accuracy": 0.9679197008462901,
+          "confidence": 0.7375093338568599
+        },
+        {
+          "bin": 8,
+          "rows": 254,
+          "accuracy": 0.8149606299212598,
+          "confidence": 0.8147661559225068
+        },
+        {
+          "bin": 9,
+          "rows": 1,
+          "accuracy": 1.0,
+          "confidence": 0.9015939831733704
+        }
+      ]
+    }
+  },
+  {
+    "epoch": 13,
+    "train": {
+      "macro_f1": 0.5432018969364882,
+      "per_class_f1": [
+        0.7886901630720673,
+        0.2977136308009091
+      ],
+      "per_class_precision": [
+        0.9557256990679095,
+        0.1883240559835834
+      ],
+      "per_class_recall": [
+        0.6713550788091068,
+        0.7102933679380822
+      ],
+      "support": [
+        401984,
+        43154
+      ],
+      "confusion": [
+        [
+          269874,
+          132110
+        ],
+        [
+          12502,
+          30652
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.6713550788091068,
+          0.32864492119089317
+        ],
+        [
+          0.28970663206191777,
+          0.7102933679380822
+        ]
+      ],
+      "rows": 445138,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.1883240559835834,
+      "positive_recall": 0.7102933679380822,
+      "positive_f1": 0.2977136308009091,
+      "accuracy": 0.6751299596978915,
+      "balanced_accuracy": 0.6908242233735945,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.09694521698888883,
+      "predicted_follow_rate": 0.3656439126742718,
+      "follow_AP": {
+        "value": 0.2601878313609132,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7571729957695966,
+        "reason": null
+      },
+      "log_loss": 0.5886836789091698,
+      "binary_Brier": 0.2024803535262099,
+      "ECE": 0.03309623381149002,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 115788,
+          "accuracy": 0.5266953397588696,
+          "confidence": 0.5499675837842982
+        },
+        {
+          "bin": 6,
+          "rows": 114585,
+          "accuracy": 0.6017977920321159,
+          "confidence": 0.6490591551343377
+        },
+        {
+          "bin": 7,
+          "rows": 109963,
+          "accuracy": 0.715449742186008,
+          "confidence": 0.7501462161615245
+        },
+        {
+          "bin": 8,
+          "rows": 93779,
+          "accuracy": 0.8738736817411148,
+          "confidence": 0.8453939896289482
+        },
+        {
+          "bin": 9,
+          "rows": 11023,
+          "accuracy": 0.9035652726118116,
+          "confidence": 0.9159190809886636
+        }
+      ]
+    },
+    "validation": {
+      "macro_f1": 0.5581917073792694,
+      "per_class_f1": [
+        0.944167083899578,
+        0.17221633085896076
+      ],
+      "per_class_precision": [
+        0.9719326147140248,
+        0.12097735399284863
+      ],
+      "per_class_recall": [
+        0.9179438680426135,
+        0.29874908020603386
+      ],
+      "support": [
+        35951,
+        1359
+      ],
+      "confusion": [
+        [
+          33001,
+          2950
+        ],
+        [
+          953,
+          406
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.9179438680426135,
+          0.08205613195738644
+        ],
+        [
+          0.7012509197939661,
+          0.29874908020603386
+        ]
+      ],
+      "rows": 37310,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.12097735399284863,
+      "positive_recall": 0.29874908020603386,
+      "positive_f1": 0.17221633085896076,
+      "accuracy": 0.8953899758777808,
+      "balanced_accuracy": 0.6083464741243236,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.0364245510586974,
+      "predicted_follow_rate": 0.08994907531492898,
+      "follow_AP": {
+        "value": 0.10116403128886224,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7377425090225311,
+        "reason": null
+      },
+      "log_loss": 0.38831131874203745,
+      "binary_Brier": 0.11331984462290423,
+      "ECE": 0.1784100416048271,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 7708,
+          "accuracy": 0.6778671510119356,
+          "confidence": 0.5510263631326211
+        },
+        {
+          "bin": 6,
+          "rows": 8789,
+          "accuracy": 0.8954374786665149,
+          "confidence": 0.6487043530633932
+        },
+        {
+          "bin": 7,
+          "rows": 9341,
+          "accuracy": 0.9606037897441387,
+          "confidence": 0.7525436829948257
+        },
+        {
+          "bin": 8,
+          "rows": 10716,
+          "accuracy": 0.9877752892870474,
+          "confidence": 0.8478826839544961
+        },
+        {
+          "bin": 9,
+          "rows": 756,
+          "accuracy": 0.9973544973544973,
+          "confidence": 0.9078388855984759
+        }
+      ]
+    }
+  },
+  {
+    "epoch": 14,
+    "train": {
+      "macro_f1": 0.5453002727275562,
+      "per_class_f1": [
+        0.7916792941066766,
+        0.29892125134843583
+      ],
+      "per_class_precision": [
+        0.9554319997749269,
+        0.18957496299429055
+      ],
+      "per_class_recall": [
+        0.6758453072759115,
+        0.70633081521991
+      ],
+      "support": [
+        401984,
+        43154
+      ],
+      "confusion": [
+        [
+          271679,
+          130305
+        ],
+        [
+          12673,
+          30481
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.6758453072759115,
+          0.32415469272408853
+        ],
+        [
+          0.2936691847800899,
+          0.70633081521991
+        ]
+      ],
+      "rows": 445138,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.18957496299429055,
+      "positive_recall": 0.70633081521991,
+      "positive_f1": 0.29892125134843583,
+      "accuracy": 0.6788007314585589,
+      "balanced_accuracy": 0.6910880612479108,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.09694521698888883,
+      "predicted_follow_rate": 0.3612048398474181,
+      "follow_AP": {
+        "value": 0.26111175836211453,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7572064676505363,
+        "reason": null
+      },
+      "log_loss": 0.585641393985194,
+      "binary_Brier": 0.20146030622866434,
+      "ECE": 0.027938627079829696,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 119834,
+          "accuracy": 0.536650700135187,
+          "confidence": 0.5499918090715598
+        },
+        {
+          "bin": 6,
+          "rows": 116755,
+          "accuracy": 0.6165560361440624,
+          "confidence": 0.6488452760163765
+        },
+        {
+          "bin": 7,
+          "rows": 103057,
+          "accuracy": 0.7063275662982621,
+          "confidence": 0.7500331975782163
+        },
+        {
+          "bin": 8,
+          "rows": 88618,
+          "accuracy": 0.8716739262903699,
+          "confidence": 0.8465708054167645
+        },
+        {
+          "bin": 9,
+          "rows": 16874,
+          "accuracy": 0.9379518786298447,
+          "confidence": 0.9178537203335009
+        }
+      ]
+    },
+    "validation": {
+      "macro_f1": 0.5556408657226258,
+      "per_class_f1": [
+        0.9419153176662891,
+        0.16936641377896247
+      ],
+      "per_class_precision": [
+        0.9720052083333334,
+        0.11739624786810687
+      ],
+      "per_class_recall": [
+        0.9136324441601068,
+        0.3038999264164827
+      ],
+      "support": [
+        35951,
+        1359
+      ],
+      "confusion": [
+        [
+          32846,
+          3105
+        ],
+        [
+          946,
+          413
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.9136324441601068,
+          0.08636755583989318
+        ],
+        [
+          0.6961000735835173,
+          0.3038999264164827
+        ]
+      ],
+      "rows": 37310,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.11739624786810687,
+      "positive_recall": 0.3038999264164827,
+      "positive_f1": 0.16936641377896247,
+      "accuracy": 0.8914232109354061,
+      "balanced_accuracy": 0.6087661852882947,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.0364245510586974,
+      "predicted_follow_rate": 0.09429107477887966,
+      "follow_AP": {
+        "value": 0.0992941352722835,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7323493658863489,
+        "reason": null
+      },
+      "log_loss": 0.37270213165605237,
+      "binary_Brier": 0.10797961085266108,
+      "ECE": 0.15786714624874126,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 6957,
+          "accuracy": 0.6502802932298405,
+          "confidence": 0.5506027090201625
+        },
+        {
+          "bin": 6,
+          "rows": 7589,
+          "accuracy": 0.8698115693767294,
+          "confidence": 0.6523668873897575
+        },
+        {
+          "bin": 7,
+          "rows": 8837,
+          "accuracy": 0.9511146316623288,
+          "confidence": 0.751487232234611
+        },
+        {
+          "bin": 8,
+          "rows": 12192,
+          "accuracy": 0.984251968503937,
+          "confidence": 0.8501688561071042
+        },
+        {
+          "bin": 9,
+          "rows": 1735,
+          "accuracy": 0.9965417867435159,
+          "confidence": 0.9115101172854474
+        }
+      ]
+    }
+  },
+  {
+    "epoch": 15,
+    "train": {
+      "macro_f1": 0.5432439313450285,
+      "per_class_f1": [
+        0.7887444951299982,
+        0.29774336756005865
+      ],
+      "per_class_precision": [
+        0.9557239474522857,
+        0.18835111351457648
+      ],
+      "per_class_recall": [
+        0.671434683967521,
+        0.7102470222922557
+      ],
+      "support": [
+        401984,
+        43154
+      ],
+      "confusion": [
+        [
+          269906,
+          132078
+        ],
+        [
+          12504,
+          30650
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.671434683967521,
+          0.3285653160324789
+        ],
+        [
+          0.28975297770774433,
+          0.7102470222922557
+        ]
+      ],
+      "rows": 445138,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.18835111351457648,
+      "positive_recall": 0.7102470222922557,
+      "positive_f1": 0.29774336756005865,
+      "accuracy": 0.6751973545282587,
+      "balanced_accuracy": 0.6908408531298884,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.09694521698888883,
+      "predicted_follow_rate": 0.3655675318665223,
+      "follow_AP": {
+        "value": 0.2620577614981376,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7572341010158875,
+        "reason": null
+      },
+      "log_loss": 0.5870608888546398,
+      "binary_Brier": 0.202038605800312,
+      "ECE": 0.03063228834530895,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 118649,
+          "accuracy": 0.5237465128235383,
+          "confidence": 0.5500848722288189
+        },
+        {
+          "bin": 6,
+          "rows": 116290,
+          "accuracy": 0.6124258319717947,
+          "confidence": 0.6500000834582914
+        },
+        {
+          "bin": 7,
+          "rows": 107106,
+          "accuracy": 0.7141429985248259,
+          "confidence": 0.7495816027085768
+        },
+        {
+          "bin": 8,
+          "rows": 88042,
+          "accuracy": 0.869959791917494,
+          "confidence": 0.8466960091849368
+        },
+        {
+          "bin": 9,
+          "rows": 15051,
+          "accuracy": 0.9376785595641486,
+          "confidence": 0.9179331100944997
+        }
+      ]
+    },
+    "validation": {
+      "macro_f1": 0.5615586214513508,
+      "per_class_f1": [
+        0.95130257108803,
+        0.1718146718146718
+      ],
+      "per_class_precision": [
+        0.9709485879797248,
+        0.12782764811490124
+      ],
+      "per_class_recall": [
+        0.9324358154154265,
+        0.2619573215599706
+      ],
+      "support": [
+        35951,
+        1359
+      ],
+      "confusion": [
+        [
+          33522,
+          2429
+        ],
+        [
+          1003,
+          356
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.9324358154154265,
+          0.06756418458457344
+        ],
+        [
+          0.7380426784400295,
+          0.2619573215599706
+        ]
+      ],
+      "rows": 37310,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.12782764811490124,
+      "positive_recall": 0.2619573215599706,
+      "positive_f1": 0.1718146718146718,
+      "accuracy": 0.90801393728223,
+      "balanced_accuracy": 0.5971965684876985,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.0364245510586974,
+      "predicted_follow_rate": 0.07464486732779416,
+      "follow_AP": {
+        "value": 0.10111666859069421,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.735024610085238,
+        "reason": null
+      },
+      "log_loss": 0.3449921719881458,
+      "binary_Brier": 0.09713570975195664,
+      "ECE": 0.1579887329351883,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 6055,
+          "accuracy": 0.6627580511973575,
+          "confidence": 0.5504052244711276
+        },
+        {
+          "bin": 6,
+          "rows": 6491,
+          "accuracy": 0.8792173779078725,
+          "confidence": 0.652165411957018
+        },
+        {
+          "bin": 7,
+          "rows": 8882,
+          "accuracy": 0.9566539067777527,
+          "confidence": 0.7520134049297668
+        },
+        {
+          "bin": 8,
+          "rows": 12675,
+          "accuracy": 0.9835108481262328,
+          "confidence": 0.8522682162120028
+        },
+        {
+          "bin": 9,
+          "rows": 3207,
+          "accuracy": 0.9962581852198317,
+          "confidence": 0.9153876981381728
+        }
+      ]
+    }
+  },
+  {
+    "epoch": 16,
+    "train": {
+      "macro_f1": 0.5404929357115691,
+      "per_class_f1": [
+        0.7848687143628129,
+        0.29611715706032515
+      ],
+      "per_class_precision": [
+        0.9560609958269022,
+        0.1867231467473525
+      ],
+      "per_class_recall": [
+        0.6656732606272886,
+        0.7150206238123928
+      ],
+      "support": [
+        401984,
+        43154
+      ],
+      "confusion": [
+        [
+          267590,
+          134394
+        ],
+        [
+          12298,
+          30856
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.6656732606272886,
+          0.33432673937271135
+        ],
+        [
+          0.28497937618760716,
+          0.7150206238123928
+        ]
+      ],
+      "rows": 445138,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.1867231467473525,
+      "positive_recall": 0.7150206238123928,
+      "positive_f1": 0.29611715706032515,
+      "accuracy": 0.6704572514590981,
+      "balanced_accuracy": 0.6903469422198407,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.09694521698888883,
+      "predicted_follow_rate": 0.37123319060605925,
+      "follow_AP": {
+        "value": 0.26126684457093835,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7565421623533851,
+        "reason": null
+      },
+      "log_loss": 0.5882357169815826,
+      "binary_Brier": 0.2029899984210685,
+      "ECE": 0.03665368035759387,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 121269,
+          "accuracy": 0.5238849170026965,
+          "confidence": 0.5496599217778875
+        },
+        {
+          "bin": 6,
+          "rows": 113719,
+          "accuracy": 0.5967516422057879,
+          "confidence": 0.6493697758401029
+        },
+        {
+          "bin": 7,
+          "rows": 106851,
+          "accuracy": 0.7067973158884803,
+          "confidence": 0.7489615538500074
+        },
+        {
+          "bin": 8,
+          "rows": 85279,
+          "accuracy": 0.8715744790628408,
+          "confidence": 0.8475014797764024
+        },
+        {
+          "bin": 9,
+          "rows": 18020,
+          "accuracy": 0.9547169811320755,
+          "confidence": 0.9187378980244172
+        }
+      ]
+    },
+    "validation": {
+      "macro_f1": 0.5567681454853304,
+      "per_class_f1": [
+        0.9430130472766853,
+        0.1705232436939754
+      ],
+      "per_class_precision": [
+        0.9719532357109116,
+        0.11896451425247237
+      ],
+      "per_class_recall": [
+        0.9157464326444327,
+        0.30095658572479767
+      ],
+      "support": [
+        35951,
+        1359
+      ],
+      "confusion": [
+        [
+          32922,
+          3029
+        ],
+        [
+          950,
+          409
+        ]
+      ],
+      "confusion_row_normalized": [
+        [
+          0.9157464326444327,
+          0.0842535673555673
+        ],
+        [
+          0.6990434142752023,
+          0.30095658572479767
+        ]
+      ],
+      "rows": 37310,
+      "class_order": [
+        "no_follow",
+        "follow"
+      ],
+      "positive_precision": 0.11896451425247237,
+      "positive_recall": 0.30095658572479767,
+      "positive_f1": 0.1705232436939754,
+      "accuracy": 0.8933529884749397,
+      "balanced_accuracy": 0.6083515091846152,
+      "supported_class_count": 2,
+      "true_follow_rate": 0.0364245510586974,
+      "predicted_follow_rate": 0.09214687751273117,
+      "follow_AP": {
+        "value": 0.1020811290695706,
+        "reason": null
+      },
+      "ROC_AUC": {
+        "value": 0.7392444408994346,
+        "reason": null
+      },
+      "log_loss": 0.38321537100837266,
+      "binary_Brier": 0.11105976523586804,
+      "ECE": 0.1711585680578484,
+      "calibration_bins": [
+        {
+          "bin": 0,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 1,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 2,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 3,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 4,
+          "rows": 0,
+          "accuracy": null,
+          "confidence": null
+        },
+        {
+          "bin": 5,
+          "rows": 7132,
+          "accuracy": 0.6519910263600673,
+          "confidence": 0.5504542761223743
+        },
+        {
+          "bin": 6,
+          "rows": 7980,
+          "accuracy": 0.8849624060150376,
+          "confidence": 0.6530931132815236
+        },
+        {
+          "bin": 7,
+          "rows": 10779,
+          "accuracy": 0.9581593839873829,
+          "confidence": 0.7497117626806924
+        },
+        {
+          "bin": 8,
+          "rows": 10484,
+          "accuracy": 0.9880770698206791,
+          "confidence": 0.8466499462220584
+        },
+        {
+          "bin": 9,
+          "rows": 935,
+          "accuracy": 0.9967914438502674,
+          "confidence": 0.9092296880674872
+        }
+      ]
+    }
+  }
+]

@@ -1,0 +1,15 @@
+{
+  "status": "completed",
+  "trained_trials": 24,
+  "aliases": {
+    "FF": "full",
+    "FH": "full"
+  },
+  "requested_trials": 24,
+  "full_matrix": true,
+  "artifact_hashes_sha256": "fa75f4652fbad6df45a30f7620c0a03c726f81e327d556f5aac1086d9c97ddec",
+  "strict_pit": false,
+  "fresh_oos": false,
+  "direction_policy": "fixed_same_as_source_user_approved_20261031",
+  "three_class_direction_claim": false
+}

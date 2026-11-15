@@ -1,0 +1,57 @@
+{
+  "schema": "alpha39_frozen_direction_concat",
+  "version": "1.0.0",
+  "task": "conditional_same_opposite; absolute_up_down_is_source_sign_conversion",
+  "candidates": {
+    "tail100_mlp": [
+      "tail100",
+      "mlp"
+    ],
+    "old8_mlp": [
+      "old8",
+      "mlp"
+    ],
+    "raw19_mlp": [
+      "raw19",
+      "mlp"
+    ],
+    "concat108_mlp": [
+      "concat108",
+      "mlp"
+    ],
+    "concat119_mlp": [
+      "concat119",
+      "mlp"
+    ],
+    "concat119_linear": [
+      "concat119",
+      "linear"
+    ],
+    "concat119_gbdt": [
+      "concat119",
+      "gbdt"
+    ]
+  },
+  "head_seeds": [
+    20261002,
+    20261003,
+    20261004
+  ],
+  "backbone_seed": 20261002,
+  "full_sha": "ced9d117acc16c6df56e39ae11e7a26eb3fda3d629371ee0aa667ca66ff697b6",
+  "history_sha": "9937ffebb3370060685c1f24dd09372e75b0cde2dcb4286d25a808edf2cea5aa",
+  "old_mlp_sha": "e2036e63d641222d674b584283f4a2e5906f3480b7f44e386cd15cbe1d30b7d5",
+  "routing": "q>0.5 at inference; train all true O/S; q unchanged",
+  "new_follow_loss": false,
+  "representation": "100-D Full tail; old8 frozen legacy direction branch; raw19 original v3 causal feature formula on alpha39",
+  "mlp": "D->16 GELU->1; Adam .001 wd1e-5 batch_pairs2048 max40 patience7",
+  "selection": "source_event_validation_direction_BCE_including_epoch0; no_test_or_return_selection",
+  "trees": "fixed100iters depth3 leaves7 minleaf100 lr.05 l2=1 early_stoppingFalse",
+  "limitations": [
+    "Previously inspected test; not fresh OOS",
+    "Retrospective universe; not strict PIT",
+    "Frozen backbones legacy Follow-AP-selected and jointly pretrained",
+    "Three head seeds share ONE frozen backbone pair"
+  ],
+  "artifacts": "compact summaries, pair probabilities, numeric heads, graph cache; no dense embeddings or full ledgers"
+}

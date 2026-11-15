@@ -1,0 +1,114 @@
+{
+  "schema": "full_dir119_single_seed_ten_year",
+  "version": "1.0.0",
+  "model": "Full+Dir119Linear-v1",
+  "parent": {
+    "path": "models_performance/ten_year/protocol.v2.json",
+    "sha256": "30e5c000fca2acd0dc7d6c2da8d36385a6712d8428d77217a381f20d01e3e925"
+  },
+  "primary_seed": 20261002,
+  "seed_replicates": 1,
+  "scope": "classification_only_single_seed_extension_not_complete_parent_suite",
+  "architecture": {
+    "tail": "input_to_Full.prediction_head.follow_output",
+    "tail_dimensions": 100,
+    "raw_dimensions": 19,
+    "raw_order": [
+      "source_sign",
+      "source_scaled_return",
+      "target_scaled_return",
+      "source_sign_x_target_return",
+      "source_momentum_2",
+      "source_momentum_4",
+      "source_momentum_8",
+      "target_momentum_2",
+      "target_momentum_4",
+      "target_momentum_8",
+      "source_sign_x_target_momentum_2",
+      "source_sign_x_target_momentum_4",
+      "source_sign_x_target_momentum_8",
+      "source_available_2",
+      "source_available_4",
+      "source_available_8",
+      "target_available_2",
+      "target_available_4",
+      "target_available_8"
+    ],
+    "total_dimensions": 119,
+    "raw_formula": "tools.run_direction_bypass.features",
+    "windows": [
+      2,
+      4,
+      8
+    ],
+    "momentum": "compound_same_trading_date_contiguous_15m_through_cutoff",
+    "missing": "zero_with_window_availability",
+    "scaling": "train_true_OS_only_population_std_floor1e-8_to1",
+    "output": "sigmoid(Linear(119,1));120_parameters",
+    "q": "native_Full_softmax_follow_class1",
+    "d": "P(same_given_follow)",
+    "decision": "N_if_q<=0.5_else_S_if_d>0.5_else_O",
+    "routing": "q>0.5_offdiagonal_only;otherwise_d=0.5",
+    "history_backbone_required": false
+  },
+  "backbone": {
+    "initialization": "scratch",
+    "loss": "parent_hierarchical_source_event_balanced_train",
+    "selection": "validation_three_class_macro_f1_earliest_strict_maximum",
+    "max_epochs": 40,
+    "patience": 7,
+    "batch_size": 16,
+    "optimizer": "Adam",
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05
+  },
+  "direction": {
+    "initialization": "zero",
+    "training": "all_true_OS_source_event_weighted_BCE",
+    "selection": "validation_true_OS_source_event_BCE_earliest_strict_minimum_including_epoch0",
+    "max_epochs": 40,
+    "patience": 7,
+    "batch_size": 2048,
+    "learning_rate": 0.001,
+    "weight_decay": 1e-05
+  },
+  "seven_year_weights_allowed": false,
+  "fit_scaler_on": "train_true_OS_only",
+  "test_tuning": false,
+  "data_splits": {
+    "train": {
+      "samples": 6519,
+      "first": "2017-10-31T14:15:00.000000000",
+      "last": "2023-02-24T14:45:00.000000000",
+      "nominal_start": "2016-08-26",
+      "end_exclusive": "2023-02-26",
+      "embargo_start": "2016-08-26",
+      "unsupervised_cutoffs_excluded": 4972,
+      "supervised_pairs": 445138
+    },
+    "validation": {
+      "samples": 765,
+      "first": "2023-03-28T09:30:00.000000000",
+      "last": "2024-02-22T14:30:00.000000000",
+      "nominal_start": "2023-02-26",
+      "end_exclusive": "2024-02-26",
+      "embargo_start": "2023-03-28",
+      "unsupervised_cutoffs_excluded": 1215,
+      "supervised_pairs": 37310
+    },
+    "test": {
+      "samples": 2434,
+      "first": "2024-03-26T14:30:00.000000000",
+      "last": "2026-08-25T14:15:00.000000000",
+      "nominal_start": "2024-02-26",
+      "end_exclusive": "2026-08-26",
+      "embargo_start": "2024-03-26",
+      "unsupervised_cutoffs_excluded": 2849,
+      "supervised_pairs": 128596
+    }
+  },
+  "backtest": "not_run_not_requested",
+  "strict_pit": false,
+  "fresh_oos": false,
+  "previously_inspected_test": true
+}

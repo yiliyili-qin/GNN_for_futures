@@ -1,0 +1,134 @@
+{
+  "schema": "full_dir119_linear_frozen_baseline",
+  "version": "1.0.0",
+  "model": "Full+Dir119Linear-v1",
+  "domain": "ten_year_v2_27node",
+  "node_order": [
+    "A",
+    "AG",
+    "AL",
+    "AU",
+    "B",
+    "BU",
+    "C",
+    "CF",
+    "CS",
+    "HC",
+    "I",
+    "J",
+    "JM",
+    "L",
+    "M",
+    "MA",
+    "OI",
+    "P",
+    "PP",
+    "RB",
+    "RM",
+    "RU",
+    "SF",
+    "SM",
+    "TA",
+    "V",
+    "Y"
+  ],
+  "backbone_seed": 20261002,
+  "head_seed": 20261002,
+  "seed_role": "single_primary_designated_2026-11-03_not_best_test_seed",
+  "seed_replicates": 1,
+  "components": {
+    "full": {
+      "path": "models_performance/full_dir119linear_v1/20261103_primary/ten_year_full_20261002/best.pt",
+      "sha256": "c0ccc9c8dde6e8da01e650cb6f4eee092aeebf111f85233c521438cb9892f255"
+    },
+    "direction": {
+      "path": "models_performance/full_dir119linear_v1/20261103_primary/ten_year_direction_20261002/best.pt",
+      "sha256": "efbc75089c5509907558fd1c0747937ce5601f7cc9c8b2f5accdb2dea91431fc"
+    },
+    "scaler": {
+      "path": "models_performance/full_dir119linear_v1/20261103_primary/ten_year_direction_20261002/scaler.npz",
+      "sha256": "2dd12d1e523385fd230d798051dc739a384fef42d580cf5512dbae976c1c732b"
+    }
+  },
+  "feature_contract": {
+    "tail": "input_to_Full.prediction_head.follow_output",
+    "tail_dimensions": 100,
+    "raw_dimensions": 19,
+    "raw_order": [
+      "source_sign",
+      "source_scaled_return",
+      "target_scaled_return",
+      "source_sign_x_target_return",
+      "source_momentum_2",
+      "source_momentum_4",
+      "source_momentum_8",
+      "target_momentum_2",
+      "target_momentum_4",
+      "target_momentum_8",
+      "source_sign_x_target_momentum_2",
+      "source_sign_x_target_momentum_4",
+      "source_sign_x_target_momentum_8",
+      "source_available_2",
+      "source_available_4",
+      "source_available_8",
+      "target_available_2",
+      "target_available_4",
+      "target_available_8"
+    ],
+    "total_dimensions": 119,
+    "raw_formula": "tools.run_direction_bypass.features",
+    "windows": [
+      2,
+      4,
+      8
+    ],
+    "momentum": "compound_same_trading_date_contiguous_15m_through_cutoff",
+    "missing": "zero_with_window_availability",
+    "scaling": "train_true_OS_only_population_std_floor1e-8_to1",
+    "output": "sigmoid(Linear(119,1));120_parameters",
+    "q": "native_Full_softmax_follow_class1",
+    "d": "P(same_given_follow)",
+    "decision": "N_if_q<=0.5_else_S_if_d>0.5_else_O",
+    "routing": "q>0.5_offdiagonal_only;otherwise_d=0.5",
+    "history_backbone_required": false
+  },
+  "protocol": {
+    "path": "models_performance/full_dir119linear_v1/20261103_primary/experiment_protocol.json",
+    "sha256": "5b69a309681eddc6687baacc1da5e642f1877dd6a73a41ea89fe63089c000092"
+  },
+  "origin": null,
+  "implementation": {
+    "tools/full_dir119_baseline.py": "216020f71083ba055a49231b836a55fd0a874bc108643016c219a50e0b47f963",
+    "tools/alpha39_direction_concat.py": "53d7bb7ca955e8d3eeb61849f0fabed630e40ceccfa70ee48ee7d91f116b1bd6",
+    "tools/run_direction_bypass.py": "7f33254ae481505c59fee09926bec26cce0b05c2f55fe6d3f45bca756972d0e7",
+    "src/gnn_for_futures/shock_follow/models/__init__.py": "2aecacf34e3a03e3d517c243fcc5394bf018684effc289ed191a5527c80e3083",
+    "src/gnn_for_futures/shock_follow/models/gm_baseline.py": "ba91c45fda48afe185dd1ee6fa2ce192c3078cb887028fc9f65960ce92b580b0",
+    "src/gnn_for_futures/shock_follow/models/head_v1.py": "80ad35a4f587bbbc31871d2a909d13823b3de83d7109d92430e55183df7d8c3c",
+    "src/gnn_for_futures/shock_follow/models/head_v2.py": "d55c28d7d1a28f8deb047a5f7a79394302a326a4440ed15c87252071d217c0bf",
+    "src/gnn_for_futures/shock_follow/models/history_fusion.py": "ede163bf54665397a1820d3d39779e321e70cde135a61da37a9a7d8b7735892e",
+    "src/gnn_for_futures/shock_follow/models/mixer_v1.py": "ced91dddc7275faadb33f0702690d5d10229990792f12c2ed10cd713153375ac",
+    "src/gnn_for_futures/shock_follow/models/mixer_v2.py": "498f1eb6daf1ff869250a00d829b156f08423e241802f1db2163ccfa818ac2aa",
+    "src/gnn_for_futures/shock_follow/graph.py": "e493813cddb651de2e54bbfabd6d169569254bf681782a808c0784fb1db26187",
+    "src/gnn_for_futures/graph/__init__.py": "d49a90ee226751d50daa36223cb589e3966faf9f1640f316ebc85dd21e81b540",
+    "src/gnn_for_futures/graph/directed_data.py": "11cd188c969b3f96eae9c6e9d77bea045cb18191856c903f4c859bb89e45f641",
+    "src/gnn_for_futures/graph/regression.py": "6f2f7dfcb71bd2259dd4d7a387c134e2f3e15c9b036cd35b4a47c2fa56c46b2d",
+    "src/gnn_for_futures/graph/temporal_attention.py": "f97d01dc85b25b80db85458b1d71b01f84e828881ab6da20993d09f8e2edef19"
+  },
+  "selection": {
+    "direction": "validation_source_event_direction_BCE_earliest_strict_minimum_including_epoch_zero",
+    "direction_epoch": 5
+  },
+  "strict_pit": false,
+  "fresh_oos": false,
+  "previously_inspected_test": true,
+  "scope": "frozen_inference_artifact_not_full_parent_suite_admission",
+  "release_packaging": {
+    "original_manifest_sha256": "61ba75d4be74a751c660d80014d6bacb7c3af53d6cad994707068fdcb67c7359",
+    "weights_and_scaler_unchanged": true,
+    "selection_unchanged": true,
+    "note": "Helper-only source packaging; original sealed run is untouched and bulk evidence is not distributed.",
+    "original_protocol_sha256": "5b69a309681eddc6687baacc1da5e642f1877dd6a73a41ea89fe63089c000092",
+    "protocol_note": "Only historical host/directory redacted. Original private protocol and evidence required for original retraining admission.",
+    "source_line_endings": "Canonical LF in public Python sources; implementation hashes rebound to distributed bytes."
+  }
+}

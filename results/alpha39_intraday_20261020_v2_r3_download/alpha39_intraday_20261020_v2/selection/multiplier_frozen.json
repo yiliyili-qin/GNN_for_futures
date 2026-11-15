@@ -1,0 +1,240 @@
+{
+  "schema": "signed_m_v1",
+  "variant": "full",
+  "head": "dual",
+  "selection_split": "validation",
+  "objective": "daily_sharpe",
+  "multiplier": 10.0,
+  "checkpoint_sha256": "ced9d117acc16c6df56e39ae11e7a26eb3fda3d629371ee0aa667ca66ff697b6",
+  "candidates": [
+    0.0,
+    0.1,
+    0.25,
+    0.5,
+    1.0,
+    2.0,
+    5.0,
+    10.0
+  ],
+  "results": [
+    {
+      "multiplier": 0.0,
+      "metrics": {
+        "total_return": 0.012178028786387296,
+        "annual_return": 0.027118446146300323,
+        "sharpe": 0.601526438926972,
+        "max_drawdown": 0.025467661682382126,
+        "calmar": 1.0648188469167614,
+        "target_weight_turnover": 2.0,
+        "flat_bar_turnover_entry_equity": 2048.0125712068602,
+        "maximum_gross_exposure": 1.0,
+        "minimum_net_exposure": 1.0,
+        "maximum_net_exposure": 1.0,
+        "trading_days": 114,
+        "intervals": 1024
+      }
+    },
+    {
+      "multiplier": 0.1,
+      "metrics": {
+        "total_return": 0.016768481598919083,
+        "annual_return": 0.03744381855310208,
+        "sharpe": 0.8058255958903539,
+        "max_drawdown": 0.024536153597236043,
+        "calmar": 1.5260671728644568,
+        "target_weight_turnover": 38.67889100997736,
+        "flat_bar_turnover_entry_equity": 2049.759703786377,
+        "maximum_gross_exposure": 1.054278566711103,
+        "minimum_net_exposure": 0.9999999999999994,
+        "maximum_net_exposure": 1.0000000000000004,
+        "trading_days": 114,
+        "intervals": 1024
+      }
+    },
+    {
+      "multiplier": 0.25,
+      "metrics": {
+        "total_return": 0.01700854710376687,
+        "annual_return": 0.037985357906622275,
+        "sharpe": 0.8153763300220547,
+        "max_drawdown": 0.024484649967015493,
+        "calmar": 1.5513947701026671,
+        "target_weight_turnover": 41.82655487092521,
+        "flat_bar_turnover_entry_equity": 2052.053917685751,
+        "maximum_gross_exposure": 1.1162298459449882,
+        "minimum_net_exposure": 0.9999999999999996,
+        "maximum_net_exposure": 1.0000000000000004,
+        "trading_days": 114,
+        "intervals": 1024
+      }
+    },
+    {
+      "multiplier": 0.5,
+      "metrics": {
+        "total_return": 0.01738599183487377,
+        "annual_return": 0.03883711003901258,
+        "sharpe": 0.8306953323125683,
+        "max_drawdown": 0.024412629751353387,
+        "calmar": 1.5908613875102713,
+        "target_weight_turnover": 46.011393948359874,
+        "flat_bar_turnover_entry_equity": 2055.212411831907,
+        "maximum_gross_exposure": 1.2000936041740493,
+        "minimum_net_exposure": 0.9999999999999996,
+        "maximum_net_exposure": 1.0000000000000004,
+        "trading_days": 114,
+        "intervals": 1024
+      }
+    },
+    {
+      "multiplier": 1.0,
+      "metrics": {
+        "total_return": 0.017985728116778787,
+        "annual_return": 0.04019127835117975,
+        "sharpe": 0.8555165664092788,
+        "max_drawdown": 0.024298216606805312,
+        "calmar": 1.6540834663529667,
+        "target_weight_turnover": 51.93237889295532,
+        "flat_bar_turnover_entry_equity": 2059.8324600788555,
+        "maximum_gross_exposure": 1.3247409456941834,
+        "minimum_net_exposure": 0.9999999999999996,
+        "maximum_net_exposure": 1.0000000000000004,
+        "trading_days": 114,
+        "intervals": 1024
+      }
+    },
+    {
+      "multiplier": 2.0,
+      "metrics": {
+        "total_return": 0.01875751149692273,
+        "annual_return": 0.04193534020635514,
+        "sharpe": 0.8882796179769561,
+        "max_drawdown": 0.02413820380036158,
+        "calmar": 1.7373016050898937,
+        "target_weight_turnover": 58.75965893744875,
+        "flat_bar_turnover_entry_equity": 2065.35975333271,
+        "maximum_gross_exposure": 1.4509194451753389,
+        "minimum_net_exposure": 0.9999999999999994,
+        "maximum_net_exposure": 1.0000000000000004,
+        "trading_days": 114,
+        "intervals": 1024
+      }
+    },
+    {
+      "multiplier": 5.0,
+      "metrics": {
+        "total_return": 0.019717226762114404,
+        "annual_return": 0.04410631914824781,
+        "sharpe": 0.9304811300348246,
+        "max_drawdown": 0.0239350439031224,
+        "calmar": 1.8427507100788734,
+        "target_weight_turnover": 66.32770512706101,
+        "flat_bar_turnover_entry_equity": 2071.6955593506373,
+        "maximum_gross_exposure": 1.5433120070501134,
+        "minimum_net_exposure": 0.9999999999999996,
+        "maximum_net_exposure": 1.0000000000000004,
+        "trading_days": 114,
+        "intervals": 1024
+      }
+    },
+    {
+      "multiplier": 10.0,
+      "metrics": {
+        "total_return": 0.02020510578747503,
+        "annual_return": 0.0452109026604921,
+        "sharpe": 0.9525406654217901,
+        "max_drawdown": 0.02384476704634564,
+        "calmar": 1.8960513463024566,
+        "target_weight_turnover": 69.42910099563267,
+        "flat_bar_turnover_entry_equity": 2074.3507994820484,
+        "maximum_gross_exposure": 1.5589341438383113,
+        "minimum_net_exposure": 0.9999999999999996,
+        "maximum_net_exposure": 1.0000000000000004,
+        "trading_days": 114,
+        "intervals": 1024
+      }
+    }
+  ],
+  "panel_sha256": "d9bf352334aca4916523b8575be242e1be9f3802ff4a912b46fe350565f21ce6",
+  "protocol": {
+    "train": [
+      "2021-02-01",
+      "2024-12-24"
+    ],
+    "validation": [
+      "2025-01-23",
+      "2025-07-17"
+    ],
+    "test": [
+      "2025-08-15",
+      "2026-08-26"
+    ],
+    "split_bounds": {
+      "train": [
+        "2021-02-01",
+        "2024-12-24"
+      ],
+      "validation": [
+        "2025-01-23",
+        "2025-07-17"
+      ],
+      "test": [
+        "2025-08-15",
+        "2026-08-26"
+      ]
+    },
+    "nominal_ratios": [
+      0.7,
+      0.1,
+      0.2
+    ],
+    "embargo_trading_days": 21,
+    "minimum_calendar_gap": 15,
+    "end_exclusive": true,
+    "sample_counts": {
+      "train": 8145,
+      "validation": 1026,
+      "test": 2241
+    },
+    "seed": 20261002,
+    "group": "Bfix_dynamic_scale",
+    "multiplier": 0.0,
+    "leverage": 1.0,
+    "fee": 0.0,
+    "intersection": "retrospective full-panel validity",
+    "allocation": "document signed piecewise v1; positive denominator required; L is net",
+    "multiplier_artifact_sha256": null,
+    "multiplier_grid": [
+      0.0,
+      0.1,
+      0.25,
+      0.5,
+      1.0,
+      2.0,
+      5.0,
+      10.0
+    ],
+    "selection_only": true,
+    "execution": "signal close; next bar open-to-close; assumed end-labelled bars and zero latency; flat between bars",
+    "selection": "validation follow AP, earliest strict maximum, patience 7",
+    "threshold_fit": "training-only causal monthly q95; no validation/test returns",
+    "panel_sha256": "d9bf352334aca4916523b8575be242e1be9f3802ff4a912b46fe350565f21ce6",
+    "split_sizes": [
+      8145,
+      1026
+    ],
+    "epochs": 40,
+    "baseline_only": true,
+    "strict_pit": false,
+    "source_sha256": "df969d1086996f2e55adb796cfa84c3331189af4c3b4ae0fe7746aca17c41e9b",
+    "variant": "full",
+    "head": "dual",
+    "enabled_channels": [
+      true,
+      true,
+      true
+    ],
+    "positive_label": "same-direction shock follow within source-shock supervision domain",
+    "historical_graph": "last realized 15-minute absolute-shock relation at signal time",
+    "selection_metric": "follow AP"
+  }
+}

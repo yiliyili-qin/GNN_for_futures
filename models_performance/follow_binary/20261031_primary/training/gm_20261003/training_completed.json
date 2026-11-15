@@ -1,0 +1,18 @@
+{
+  "family": "gm",
+  "seed": 20261003,
+  "epochs": 27,
+  "best_epoch": 20,
+  "optimizer_steps": 13750,
+  "validation_macro_f1": 0.5565179884228532,
+  "test_macro_f1": 0.5544944817124954,
+  "checkpoint_sha256": "544f10d1cc1fafb2c9cdae6dad3ddc0baf85cc3f5502f1ab77d26059ca6d037a",
+  "prediction_sha256": {
+    "validation": "ff069364c019b505fe626f8efd53a6de37157a059c4957e2c06ee62192f1830a",
+    "test": "a56d460c237303f924215b85faae44c07ccbb8347346471c5976bb9cb9319595"
+  },
+  "seconds": 13445.562658512034,
+  "parameters": 217352,
+  "device": "cpu",
+  "peak_cuda_memory_bytes": null
+}
